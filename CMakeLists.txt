@@ -9,7 +9,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES src/app/CommandInterpreter/CommandInterpreter.cpp src/app/CommandInterpreter/CommandInterpreter.h src/app/SymulationApp.cpp src/logic/Courier/Courier.cpp src/logic/Courier/Courier.h src/logic/Interface/Interface.cpp src/logic/Interface/Interface.h src/logic/Package/Package.cpp src/logic/Package/Package.h src/map/Map/Map.cpp src/map/Map/Map.h src/map/City/City.cpp src/map/City/City.h src/map/Edge/Edge.cpp src/map/Edge/Edge.h)
+set(PROJECT_SOURCES
+   src/app/CommandInterpreter/CommandInterpreter.cpp
+   src/app/CommandInterpreter/CommandInterpreter.h
+   src/logic/Courier/Courier.cpp
+   src/logic/Courier/Courier.h
+   src/logic/Interface/Interface.cpp
+   src/logic/Interface/Interface.h
+   src/logic/Package/Package.cpp
+   src/logic/Package/Package.h
+   src/map/Map/Map.cpp
+   src/map/Map/Map.h
+   src/map/City/City.cpp
+   src/map/City/City.h
+   src/map/Edge/Edge.cpp
+   src/map/Edge/Edge.h)
 
 add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
 
