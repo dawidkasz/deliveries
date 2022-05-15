@@ -9,6 +9,10 @@ std::shared_ptr<City> Map::addCity(std::string name){
     return cities[name];
 }
 
+std::shared_ptr<City> Map::getCity(std::string name){
+    return cities[name];
+}
+
 
 std::shared_ptr<Edge> Map::addEdge(std::string srcCity, std::string dstCity, size_t distance){
     std::shared_ptr<City> cityA = cities[srcCity];

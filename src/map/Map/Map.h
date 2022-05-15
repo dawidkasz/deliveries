@@ -17,6 +17,8 @@ private:
     std::vector<std::shared_ptr<Edge>> edges;
 public:
     std::shared_ptr<City> addCity(std::string name);
+    std::shared_ptr<City> getCity(std::string name);
+
     void removeCity(std::shared_ptr<City> city);
     void removeCity(std::string name);
 

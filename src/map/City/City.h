@@ -10,7 +10,7 @@ class Edge;
 
 
 class City{
-private:
+public:
     std::string name;
     std::vector<std::shared_ptr<Edge>> edgesFrom;
     std::vector<std::shared_ptr<Edge>> edgesTo;
