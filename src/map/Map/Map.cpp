@@ -1,29 +1,38 @@
 #include <algorithm>
 #include <queue>
+#include <exception>
 #include "limits.h"
 #include "Map.h"
 
 
 City* Map::addCity(std::string name){
     cities[name] = std::make_unique<City> (City(name));
-    return cities[name].get();
+    return getCity(name);
 }
 
 City* Map::getCity(std::string name){
+    if(!cities.count(name))
+        throw std::invalid_argument("City doesn't exist.");
+
     return cities[name].get();
+}
+
+
+Edge* Map::addEdge(City* srcCity, City* dstCity, size_t distance){
+    edges.push_back(std::make_unique<Edge> (Edge(srcCity, dstCity, distance)));
+    Edge* edge = edges.back().get();
+
+    srcCity->addEdgeFrom(edge);
+    dstCity->addEdgeTo(edge);
+    return edge;
 }
 
 
 Edge* Map::addEdge(std::string srcCity, std::string dstCity, size_t distance){
-    City* cityA = cities[srcCity].get();
-    City* cityB = cities[dstCity].get();
+    City* cityA = getCity(srcCity);
+    City* cityB = getCity(dstCity);
 
-    edges.push_back(std::make_unique<Edge> (Edge(cityA, cityB, distance)));
-    Edge* edge = edges.back().get();
-
-    cityA->addEdgeFrom(edge);
-    cityB->addEdgeTo(edge);
-    return edge;
+    return addEdge(cityA, cityB, distance);
 }
 
 
@@ -55,7 +64,7 @@ void Map::removeCity(City* city){
 
 
 void Map::removeCity(std::string name){
-    removeCity(cities[name].get());
+    removeCity(getCity(name));
 }
 
 
@@ -107,12 +116,12 @@ std::pair<size_t, std::vector<Edge*>> Map::getShortestPath(City*source, City* de
     }
 
     std::reverse(path.begin(), path.end());
-    return {dist[destination], path};
+    return std::make_pair(dist[destination], path);
 }
 
 
 std::pair<size_t, std::vector<Edge*>> Map::getShortestPath(std::string source, std::string destination){
-    return getShortestPath(cities[source].get(), cities[destination].get());
+    return getShortestPath(getCity(source), getCity(destination));
 }
 
 

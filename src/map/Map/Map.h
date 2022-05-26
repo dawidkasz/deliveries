@@ -22,6 +22,7 @@ public:
     void removeCity(City* city);
     void removeCity(std::string name);
 
+    Edge* addEdge(City* srcCity, City* dstCity, size_t distance);
     Edge* addEdge(std::string srcCity, std::string dstCity, size_t distance);
     void removeEdge(Edge* edge);
 
