@@ -32,4 +32,5 @@ class Courier{
     size_t getReachTime() const;
     City* getDestination() const;
     City* getCurrentLocation() const;
+    Dimensions getCurrentLoad() const;
 };
