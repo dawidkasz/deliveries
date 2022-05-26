@@ -4,22 +4,22 @@
 #include "Map.h"
 
 
-std::shared_ptr<City> Map::addCity(std::string name){
-    cities[name] = std::make_shared<City> (City(name));
-    return cities[name];
+City* Map::addCity(std::string name){
+    cities[name] = std::make_unique<City> (City(name));
+    return cities[name].get();
 }
 
-std::shared_ptr<City> Map::getCity(std::string name){
-    return cities[name];
+City* Map::getCity(std::string name){
+    return cities[name].get();
 }
 
 
-std::shared_ptr<Edge> Map::addEdge(std::string srcCity, std::string dstCity, size_t distance){
-    std::shared_ptr<City> cityA = cities[srcCity];
-    std::shared_ptr<City> cityB = cities[dstCity];
+Edge* Map::addEdge(std::string srcCity, std::string dstCity, size_t distance){
+    City* cityA = cities[srcCity].get();
+    City* cityB = cities[dstCity].get();
 
-    edges.push_back(std::make_shared<Edge> (Edge(cityA, cityB, distance)));
-    std::shared_ptr<Edge> edge = edges.back();
+    edges.push_back(std::make_unique<Edge> (Edge(cityA, cityB, distance)));
+    Edge* edge = edges.back().get();
 
     cityA->addEdgeFrom(edge);
     cityB->addEdgeTo(edge);
@@ -27,9 +27,16 @@ std::shared_ptr<Edge> Map::addEdge(std::string srcCity, std::string dstCity, siz
 }
 
 
-void Map::removeEdge(std::shared_ptr<Edge> edge){
-    auto it = std::find(edges.begin(), edges.end(), edge);
-    std::shared_ptr<City> src = (*it)->getSrc(), dst = (*it)->getDst();
+void Map::removeEdge(Edge* edge){
+    auto it = edges.begin();
+    while(it != edges.end()){
+        if((*it).get() == edge)
+            break;
+        ++it;
+    }
+
+    City* src = (*it)->getSrc();
+    City* dst = (*it)->getDst();
 
     src->removeEdgeFrom(edge);
     dst->removeEdgeTo(edge);
@@ -37,10 +44,10 @@ void Map::removeEdge(std::shared_ptr<Edge> edge){
 }
 
 
-void Map::removeCity(std::shared_ptr<City> city){
-    for(std::shared_ptr<Edge> e : city->getEdgesFrom())
+void Map::removeCity(City* city){
+    for(Edge* e : city->getEdgesFrom())
         removeEdge(e);
-    for(std::shared_ptr<Edge> e : city->getEdgesTo())
+    for(Edge* e : city->getEdgesTo())
         removeEdge(e);
 
     cities.erase(city->getName());
@@ -48,29 +55,28 @@ void Map::removeCity(std::shared_ptr<City> city){
 
 
 void Map::removeCity(std::string name){
-    removeCity(cities[name]);
+    removeCity(cities[name].get());
 }
 
 
-std::unordered_map<std::string, std::shared_ptr<City>>::iterator Map::begin(){
+std::unordered_map<std::string, std::unique_ptr<City>>::iterator Map::begin(){
     return cities.begin();
 }
 
 
-std::unordered_map<std::string, std::shared_ptr<City>>::iterator Map::end(){
+std::unordered_map<std::string, std::unique_ptr<City>>::iterator Map::end(){
     return cities.end();
 }
 
 
-std::pair<size_t, std::vector<std::shared_ptr<Edge>>> Map::getShortestPath(std::shared_ptr<City> source,
-                                                                           std::shared_ptr<City> destination){
-    std::unordered_map<std::shared_ptr<City>, size_t> dist;
-    std::unordered_map<std::shared_ptr<City>, bool> processed;
-    std::unordered_map<std::shared_ptr<City>, std::shared_ptr<Edge>> predecessor;
+std::pair<size_t, std::vector<Edge*>> Map::getShortestPath(City*source, City* destination){
+    std::unordered_map<City*, size_t> dist;
+    std::unordered_map<City*, bool> processed;
+    std::unordered_map<City*, Edge*> predecessor;
     std::priority_queue<pairDistCity, std::vector<pairDistCity>, std::greater<pairDistCity>> pq;
 
-    for(auto it : cities)
-        dist[it.second] = ULONG_MAX;
+    for(auto& it : cities)
+        dist[it.second.get()] = ULONG_MAX;
     dist[source] = 0;
     predecessor[source] = nullptr;
     pq.push({0, source});
@@ -94,8 +100,8 @@ std::pair<size_t, std::vector<std::shared_ptr<Edge>>> Map::getShortestPath(std::
         }
     }
 
-    std::vector<std::shared_ptr<Edge>> path;
-    std::shared_ptr<City> curr = destination;
+    std::vector<Edge*> path;
+    City* curr = destination;
     while(predecessor[curr]){
         path.push_back(predecessor[curr]);
         curr = predecessor[curr]->getSrc();
@@ -106,19 +112,18 @@ std::pair<size_t, std::vector<std::shared_ptr<Edge>>> Map::getShortestPath(std::
 }
 
 
-std::pair<size_t, std::vector<std::shared_ptr<Edge>>> Map::getShortestPath(std::string source,
-                                                                           std::string destination){
-    return getShortestPath(cities[source], cities[destination]);
+std::pair<size_t, std::vector<Edge*>> Map::getShortestPath(std::string source, std::string destination){
+    return getShortestPath(cities[source].get(), cities[destination].get());
 }
 
 
 std::ostream& operator<<(std::ostream& os, Map& map){
     os << map.cities.size() << " " << map.edges.size() << "\n";
-    for(auto it : map)
+    for(auto& it : map)
         os << it.first << " ";
     os << "\n";
 
-    for(auto e : map.edges)
+    for(auto& e : map.edges)
         os << *e;
 
     return os;

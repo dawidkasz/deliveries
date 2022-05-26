@@ -12,24 +12,24 @@ class Edge;
 class City{
 public:
     std::string name;
-    std::vector<std::shared_ptr<Edge>> edgesFrom;
-    std::vector<std::shared_ptr<Edge>> edgesTo;
+    std::vector<Edge*> edgesFrom;
+    std::vector<Edge*> edgesTo;
 public:
     City(std::string cityCodeName) : name(cityCodeName) {}
 
     std::string getName() const;
 
-    std::vector<std::shared_ptr<Edge>> getEdgesFrom() const;
-    std::vector<std::shared_ptr<Edge>> getEdgesTo() const;
+    std::vector<Edge*> getEdgesFrom() const;
+    std::vector<Edge*> getEdgesTo() const;
 
-    void addEdgeFrom(std::shared_ptr<Edge> edge);
-    void addEdgeTo(std::shared_ptr<Edge> edge);
+    void addEdgeFrom(Edge* edge);
+    void addEdgeTo(Edge* edge);
 
-    void removeEdgeFrom(std::shared_ptr<Edge> edge);
-    void removeEdgeTo(std::shared_ptr<Edge> edge);
+    void removeEdgeFrom(Edge* edge);
+    void removeEdgeTo(Edge* edge);
 
-    std::vector<std::shared_ptr<Edge>>::iterator begin();
-    std::vector<std::shared_ptr<Edge>>::iterator end();
+    std::vector<Edge*>::iterator begin();
+    std::vector<Edge*>::iterator end();
 };
 
 
