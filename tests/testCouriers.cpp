@@ -14,23 +14,39 @@ class CourierTest : public ::testing::Test
     City* city1;
     City* city2;
     Dimensions* capacity;
+    Dimensions* smallVolume;
     std::vector<Privelages*> privelages;
+    Courier* courier;
+    std::vector<AbstractPackage*> packages;
+    Dimensions packagesLoad;
     virtual void SetUp()
     {
+        courier = new Courier("Test", city1, capacity, privelages, city2);
         city1 = new City("WAW");
         city2 = new City("POZ");
-        capacity = new Dimensions(10);
+        capacity = new Dimensions(100);
+        smallVolume = new Dimensions(10);
         privelages = {
             new Privelages("test1"),
             new Privelages("test2"),
             new Privelages("test3"),
         };
+        packages = {
+            new Package("test", 10, smallVolume, city1, city2),
+            new Package("test", 10, smallVolume, city1, city2),
+            new Package("test", 10, smallVolume, city1, city2),
+            new Package("test", 10, smallVolume, city1, city2),
+        };
+        for(auto p:packages)
+            packagesLoad+=*p->getVolume();
 
     }
     virtual void TearDown(){
         delete city1;
         delete city2;
         delete capacity;
+        delete smallVolume;
+        delete courier;
         for(auto p:privelages)
             delete p;
     }
@@ -39,6 +55,16 @@ class CourierTest : public ::testing::Test
 TEST_F(CourierTest, test_creating_courier){
     Courier c("Test", city1, capacity, privelages, city2);
     ASSERT_EQ(c.getCurrentLocation()->getName(), city2->getName());
+}
+
+TEST_F(CourierTest, test_assigning_packages){
+    ASSERT_NO_THROW(courier->addPackagesToCollect(packages));
+}
+
+TEST_F(CourierTest, test_collecting_packages){
+    courier->addPackagesToCollect(packages);
+    courier->performLocalActions();
+    ASSERT_EQ(courier->getCurrentLoad(), packagesLoad);
 }
 
 TEST_F(CourierTest, test_comparing_couriers){

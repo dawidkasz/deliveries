@@ -29,6 +29,14 @@ class Dimensions{
         temp+=dimension;
         return temp;
     }
+    void operator-=(Dimensions const& dimension){
+        volume-=dimension.getVolume();
+    }
+    Dimensions operator-(Dimensions const& dimension) const{
+        Dimensions temp(*this);
+        temp-=dimension;
+        return temp;
+    }
     friend std::ostream& operator<<(std::ostream& c, Dimensions const& d){
         c<<d.getVolume();
         return c;

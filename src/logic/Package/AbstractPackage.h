@@ -60,5 +60,8 @@ class AbstractPackage{
     std::string getDescription(){
         return description;
     }
+    Dimensions* getVolume(){
+        return dimensions;
+    }
 
 };
