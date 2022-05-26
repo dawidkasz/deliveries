@@ -1,16 +1,19 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <queue>
 #include "../Package/AbstractPackage.h"
 
 class Courier{
     typedef std::unordered_map<std::string, std::vector<AbstractPackage*> > Container;
+    typedef std::pair<size_t, std::vector<Edge*> > Route;
+    typedef std::queue<std::pair<size_t, City* > > RouteQueue;
     static size_t number_of_couriers;
     size_t id;
     std::string name;
     City* currentLocalization;
     City* currentDestination=nullptr;
-    std::vector<City* > currentRoute;
+    RouteQueue currentRoute;
     City* defaultLocalization;
     Dimensions* capacity;
     size_t timeOfReaching=0;
@@ -34,7 +37,7 @@ class Courier{
     void performLocalActions();
     bool canDeliverPackage(AbstractPackage const& package) const;
     void nextLocaction();
-    void setNewRoute(std::vector<City* > route);
+    void setNewRoute(Route const& route);
     size_t getReachTime() const;
     City* getDestination() const;
     City* getCurrentLocation() const;
