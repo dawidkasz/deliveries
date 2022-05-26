@@ -32,10 +32,10 @@ set(PROJECT_SOURCES
 
 # add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
 
-add_executable(testPackage tests/testPackages.cpp ${PROJECT_SOURCES})
+add_executable(testProgramObjects tests/testPackages.cpp tests/testCouriers.cpp ${PROJECT_SOURCES})
 # add_executable(testSomething tests/SomeUnitTest.cpp ${PROJECT_SOURCES})
 # add_executable(testMap tests/testMap.cpp ${PROJECT_SOURCES})
 
-target_link_libraries(testPackage PUBLIC gtest_main)
+target_link_libraries(testProgramObjects PUBLIC gtest_main)
 # target_link_libraries(testSomething PUBLIC gtest_main)
 # target_link_libraries(testMap PUBLIC gtest_main)
