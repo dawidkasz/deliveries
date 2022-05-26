@@ -5,11 +5,19 @@ size_t Courier::getID() const{
     return id;
 }
 
-std::shared_ptr<City> Courier::getCurrentLocation() const{
+City* Courier::getCurrentLocation() const{
     return currentLocalization;
 }
-std::shared_ptr<City> Courier::getDestination() const{
+City* Courier::getDestination() const{
     return currentDestination;
+}
+
+bool Courier::operator==(Courier const& courier) const{
+    return this->getID() == courier.getID();
+}
+
+bool Courier::operator!=(Courier const& courier) const{
+    return !(*this == courier);
 }
 // void addPackages(std::vector<AbstractPackage*> & packages);
 // void removeLocalPackages();

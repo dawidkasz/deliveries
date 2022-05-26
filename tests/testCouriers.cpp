@@ -8,87 +8,46 @@
 #include "../src/logic/Package/Package.h"
 #include "../src/map/Map/Map.h"
 
-class PackageTest : public ::testing::Test
+class CourierTest : public ::testing::Test
 {
     protected:
-    Dimensions* smallVolume = new Dimensions(10);
-    Dimensions* bigVolume = new Dimensions(30);
-    Dimensions* smallCapacity = new Dimensions(100);
-    Dimensions* bigCapacity = new Dimensions(400);
-    Map mp;
-    std::shared_ptr<City> city1;
-    std::shared_ptr<City> city2;
-    std::shared_ptr<City> city3;
-    std::shared_ptr<City> city4;
-    std::shared_ptr<City> city5;
-    std::shared_ptr<City> city6;
-    std::string packageDescription = "test";
-    int packagePriority = 10;
-    std::vector<Privelages*> privelages = {
-        new Privelages("test test", 1),
-        new Privelages("test test1", 1),
-        new Privelages("test test2", 1),
-        new Privelages("test test3", 1),
-        new Privelages("test test4", 1),
-    };
-    std::vector<AbstractPackage*> packages;
-
+    City* city1;
+    City* city2;
+    Dimensions* capacity;
+    std::vector<Privelages*> privelages;
     virtual void SetUp()
     {
-        std::stringstream ss;
-        std::string input = "6 16"
-                            "WAW BDG LODZ GD KR POZ "
-                            "WAW BDG 4 "
-                            "BDG WAW 4 "
-                            "WAW POZ 3 "
-                            "POZ WAW 3 "
-                            "WAW LODZ 1 "
-                            "LODZ WAW 1 "
-                            "WAW KR 3 "
-                            "KR WAW 3 "
-                            "WAW GD 3 "
-                            "GD WAW 3 "
-                            "BDG GD 2 "
-                            "GD BDG 2 "
-                            "BDG POZ 2 "
-                            "POZ BDG 2 "
-                            "LODZ KR 3 "
-                            "KR LODZ 3";
-        ss << input;
-        ss >> mp;
-        city1 = mp.getCity("WAW");
-        city2 = mp.getCity("BDG");
-        city3 = mp.getCity("LODZ");
-        city4 = mp.getCity("GD");
-        city5 = mp.getCity("KR");
-        city6 = mp.getCity("POZ");
-
-        packages = {
-            new Package(packageDescription, packagePriority, smallVolume, city1.get(), city6.get()),
-            new Package(packageDescription, packagePriority, smallVolume, city2.get(), city4.get()),
-            new Package(packageDescription, packagePriority, smallVolume, city5.get(), city1.get()),
-         };
+        city1 = new City("WAW");
+        city2 = new City("POZ");
+        capacity = new Dimensions(10);
+        privelages = {
+            new Privelages("test1"),
+            new Privelages("test2"),
+            new Privelages("test3"),
+        };
 
     }
     virtual void TearDown(){
-        delete smallVolume;
-        delete bigVolume;
-        delete smallCapacity;
-        delete bigCapacity;
-        for(auto p:packages)
-            delete p;
+        delete city1;
+        delete city2;
+        delete capacity;
         for(auto p:privelages)
             delete p;
     }
 };
 
-TEST_F(PackageTest, test_creating_courier){
+TEST_F(CourierTest, test_creating_courier){
+    Courier c("Test", city1, capacity, privelages, city2);
+    ASSERT_EQ(c.getCurrentLocation()->getName(), city2->getName());
+}
 
-    Courier c1("Test", city1, privelages, city1);
-    Courier c2("Test 2", city2, privelages, city4);
-    ASSERT_EQ(c1.getCurrentLocation(), city1);
-    ASSERT_EQ(c1.getCurrentLocation(), city4);
-    ASSERT_FALSE(c1.getID()==c2.getID());
+TEST_F(CourierTest, test_comparing_couriers){
+    Courier c("Test", city1, capacity, privelages, city2);
+    Courier c2("Test", city2, capacity, privelages, city1);
+    Courier c3("Test", city1, capacity, privelages, city2);
+    ASSERT_TRUE(c==c);
+    ASSERT_TRUE(c!=c3);
+    ASSERT_FALSE(c==c2);
 }
 
 // TEST_F(PackageTest, test_creating_packages){
