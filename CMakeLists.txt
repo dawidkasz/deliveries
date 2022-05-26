@@ -33,7 +33,7 @@ set(PROJECT_SOURCES
 # add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
 
 # add_executable(testProgramUtils tests/testUtils.cpp ${PROJECT_SOURCES})
-add_executable(testProgramObjects tests/testPackages.cpp tests/testCouriers.cpp tests/testUtils.cpp ${PROJECT_SOURCES})
+add_executable(testProgramObjects tests/testMap tests/testPackages.cpp tests/testCouriers.cpp tests/testUtils.cpp ${PROJECT_SOURCES})
 # add_executable(testSomething tests/SomeUnitTest.cpp ${PROJECT_SOURCES})
 # add_executable(testMap tests/testMap.cpp ${PROJECT_SOURCES})
 

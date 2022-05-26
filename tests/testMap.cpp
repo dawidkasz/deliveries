@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <sstream>
+#include <exception>
 #include "../src/map/City/City.h"
 #include "../src/map/Edge/Edge.h"
 #include "../src/map/Map/Map.h"
@@ -143,6 +144,17 @@ TEST(testMap, testAddRemove){
     auto it = city->begin();
     ASSERT_EQ((*it)->getDist(), 5);
     ASSERT_EQ(++it, city->end());
+}
+
+
+TEST(testMap, testGetCity){
+    Map mp;
+    City* cityA = mp.addCity("A");
+    mp.addCity("B");
+    mp.addEdge("A", "B", 5);
+
+    ASSERT_EQ(mp.getCity("A"), cityA);
+    EXPECT_THROW(mp.getCity("C"), std::invalid_argument);
 }
 
 
