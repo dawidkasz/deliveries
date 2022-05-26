@@ -8,14 +8,15 @@ class City;
 
 class Edge{
 private:
-    std::shared_ptr<City> src, dst;
+    City* src;
+    City* dst;
     size_t dist;
 public:
-    Edge(std::shared_ptr<City> source, std::shared_ptr<City> destination, size_t distance)
+    Edge(City* source, City* destination, size_t distance)
         : src(source), dst(destination), dist(distance) {}
 
-    std::shared_ptr<City> getSrc() const;
-    std::shared_ptr<City> getDst() const;
+    City* getSrc() const;
+    City* getDst() const;
 
     size_t getDist() const;
     void setDist(size_t newDist);

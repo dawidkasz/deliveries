@@ -8,30 +8,28 @@
 #include "../City/City.h"
 #include "../Edge/Edge.h"
 
-typedef std::pair<size_t, std::shared_ptr<City>> pairDistCity;
+typedef std::pair<size_t, City*> pairDistCity;
 
 
 class Map{
 private:
-    std::unordered_map<std::string, std::shared_ptr<City>> cities;
-    std::vector<std::shared_ptr<Edge>> edges;
+    std::unordered_map<std::string, std::unique_ptr<City>> cities;
+    std::vector<std::unique_ptr<Edge>> edges;
 public:
-    std::shared_ptr<City> addCity(std::string name);
-    std::shared_ptr<City> getCity(std::string name);
+    City* addCity(std::string name);
+    City* getCity(std::string name);
 
-    void removeCity(std::shared_ptr<City> city);
+    void removeCity(City* city);
     void removeCity(std::string name);
 
-    std::shared_ptr<Edge> addEdge(std::string srcCity, std::string dstCity, size_t distance);
-    void removeEdge(std::shared_ptr<Edge> edge);
+    Edge* addEdge(std::string srcCity, std::string dstCity, size_t distance);
+    void removeEdge(Edge* edge);
 
-    std::unordered_map<std::string, std::shared_ptr<City>>::iterator begin();
-    std::unordered_map<std::string, std::shared_ptr<City>>::iterator end();
+    std::unordered_map<std::string, std::unique_ptr<City>>::iterator begin();
+    std::unordered_map<std::string, std::unique_ptr<City>>::iterator end();
 
-    std::pair<size_t, std::vector<std::shared_ptr<Edge>>> getShortestPath(std::shared_ptr<City> source,
-                                                                          std::shared_ptr<City> destination);
-    std::pair<size_t, std::vector<std::shared_ptr<Edge>>> getShortestPath(std::string source,
-                                                                          std::string destination);
+    std::pair<size_t, std::vector<Edge*>> getShortestPath(City* source, City* destination);
+    std::pair<size_t, std::vector<Edge*>> getShortestPath(std::string source, std::string destination);
 
     friend std::ostream& operator<<(std::ostream& os, Map& map);
 };

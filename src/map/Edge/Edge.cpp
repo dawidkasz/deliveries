@@ -1,12 +1,12 @@
 #include "Edge.h"
 
 
-std::shared_ptr<City> Edge::getSrc() const{
+City* Edge::getSrc() const{
     return src;
 }
 
 
-std::shared_ptr<City> Edge::getDst() const{
+City* Edge::getDst() const{
     return dst;
 }
 
