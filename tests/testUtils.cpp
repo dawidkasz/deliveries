@@ -41,6 +41,12 @@ TEST_F(DimensionTest, test_creating_dimension){
     ASSERT_DOUBLE_EQ(d2.getVolume(), 24);
 }
 
+TEST_F(DimensionTest, test_creating_dimension_negative_volume){
+
+    ASSERT_THROW({Dimensions d(-10);}, std::invalid_argument);
+    ASSERT_THROW({Dimensions d(1, 2, -3);}, std::invalid_argument);
+}
+
 TEST_F(DimensionTest, test_comparing_dimensions){
     Dimensions d(smallVal);
     ASSERT_EQ(d, *smallVolume);
@@ -60,6 +66,24 @@ TEST_F(DimensionTest, test_adding_dimensions_collection){
     for(auto dim:dimensionsCollection)
         d+=*dim;
     ASSERT_DOUBLE_EQ(d.getVolume(), totalCollectionVolume);
+}
+
+TEST_F(DimensionTest, test_subtracting_dimensions){
+    Dimensions d = *bigVolume-*smallVolume;
+    ASSERT_DOUBLE_EQ(d.getVolume(), bigVolume->getVolume()-smallVolume->getVolume());
+}
+
+TEST_F(DimensionTest, test_subtracting_dimensions_exception){
+    ASSERT_THROW({*smallVolume-*bigVolume;}, std::invalid_argument);
+    ASSERT_NO_THROW({*smallVolume-*smallVolume;});
+}
+
+TEST_F(DimensionTest, test_subtracting_dimensions_collection){
+    double v = 100000;
+    Dimensions d(v);
+    for(auto dim:dimensionsCollection)
+        d-=*dim;
+    ASSERT_DOUBLE_EQ(d.getVolume(), v-totalCollectionVolume);
 }
 
 

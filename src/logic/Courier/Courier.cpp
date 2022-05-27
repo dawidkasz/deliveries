@@ -46,6 +46,8 @@ Dimensions Courier::getCurrentLoad() const{
     return currentLoad;
 }
 void Courier::setNewRoute(Route const& route){
+    if(currentLocalization->getName()!=route.second[0]->getSrc()->getName())
+        throw BadStartingRoutePoint();
     for(auto edge:route.second){
         currentRoute.push(std::make_pair(edge->getDist(), edge->getDst()));
     }
@@ -54,6 +56,8 @@ void Courier::setNewRoute(Route const& route){
 }
 
 void Courier::nextLocaction(){
+    if(currentRoute.empty())
+        throw EmptyCourierRoute();
     auto newLocation = currentRoute.front().second;
     currentLocalization = newLocation;
     currentRoute.pop();

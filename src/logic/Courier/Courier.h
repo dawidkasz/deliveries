@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <queue>
 #include "../Package/AbstractPackage.h"
+#include "../Utils/ObjectsExceptions.h"
 
 class Courier{
     typedef std::unordered_map<std::string, std::vector<AbstractPackage*> > Container;

@@ -124,8 +124,12 @@ TEST_F(CourierTest, test_collecting_packages_but_only_local_one){
 }
 
 TEST_F(CourierTest, test_assigning_new_route){
-    courier->setNewRoute(exampleRoute);
-    ASSERT_EQ(courier->getDestination()->getName(), "KR");
+    routingCourier->setNewRoute(exampleRoute);
+    ASSERT_EQ(routingCourier->getDestination()->getName(), "KR");
+}
+
+TEST_F(CourierTest, test_assigning_new_route_exception){
+    ASSERT_THROW({courier->setNewRoute(exampleRoute);}, BadStartingRoutePoint);
 }
 
 TEST_F(CourierTest, test_moving_courier_forward){
@@ -135,6 +139,13 @@ TEST_F(CourierTest, test_moving_courier_forward){
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "WAW");
     routingCourier->nextLocaction();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "KR");
+}
+
+TEST_F(CourierTest, test_moving_courier_forward_empty_route){
+    routingCourier->setNewRoute(exampleRoute);
+    routingCourier->nextLocaction();
+    routingCourier->nextLocaction();
+    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
 }
 
 TEST_F(CourierTest, test_full_courier_work){

@@ -1,11 +1,15 @@
 #include <iostream>
+#include <stdexcept>
 
 class Dimensions{
     double volume=0;
     public:
     Dimensions()=default;
-    Dimensions(double volume):volume(volume){};
-    Dimensions(double sideA, double sideB, double sideC):volume(sideA*sideB*sideC){};
+    Dimensions(double volume):volume(volume){
+        if(volume<0)
+            throw std::invalid_argument("Volume cannot be less than 0");
+    };
+    Dimensions(double sideA, double sideB, double sideC):Dimensions(sideA*sideB*sideC){};
     double getVolume() const{
         return volume;
     }
@@ -30,6 +34,8 @@ class Dimensions{
         return temp;
     }
     void operator-=(Dimensions const& dimension){
+        if(*this<dimension)
+            throw std::invalid_argument("Cannot subtruct from less dimension");
         volume-=dimension.getVolume();
     }
     Dimensions operator-(Dimensions const& dimension) const{
