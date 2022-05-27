@@ -9,15 +9,20 @@
 #include "../Edge/Edge.h"
 
 typedef std::pair<size_t, City*> pairDistCity;
+typedef std::pair<std::unordered_map<City*, size_t>, std::unordered_map<City*, Edge*>> pairDistPredecessor;
 
 
 class Map{
 private:
     std::unordered_map<std::string, std::unique_ptr<City>> cities;
     std::vector<std::unique_ptr<Edge>> edges;
+
+    pairDistPredecessor getAllDistances(City* source) const;
+    bool hasCycle(std::vector<Edge*> edges) const;
+    std::vector<Edge*> multiFragment(std::vector<Edge*> edges, size_t numOfCities) const;
 public:
     City* addCity(std::string name);
-    City* getCity(std::string name);
+    City* getCity(std::string name) const;
 
     void removeCity(City* city);
     void removeCity(std::string name);
@@ -29,8 +34,10 @@ public:
     std::unordered_map<std::string, std::unique_ptr<City>>::iterator begin();
     std::unordered_map<std::string, std::unique_ptr<City>>::iterator end();
 
-    std::pair<size_t, std::vector<Edge*>> getShortestPath(City* source, City* destination);
-    std::pair<size_t, std::vector<Edge*>> getShortestPath(std::string source, std::string destination);
+    std::pair<size_t, std::vector<Edge*>> getShortestPath(City* source, City* destination) const;
+    std::pair<size_t, std::vector<Edge*>> getShortestPath(std::string source, std::string destination) const;
+
+    std::vector<Edge*> getOptimalRoute(std::vector<City*> cities, City* source) const;
 
     friend std::ostream& operator<<(std::ostream& os, Map& map);
 };

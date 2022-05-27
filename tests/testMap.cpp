@@ -189,3 +189,39 @@ TEST(testMap, testGetShortestPath){
     ASSERT_EQ(res.second[1]->getSrc()->getName(), "WAW");
     ASSERT_EQ(res.second[1]->getDst()->getName(), "KR");
 }
+
+TEST(testMap, testGetOptimalRoute){
+    Map mp;
+    std::stringstream ss;
+    std::string input = "6 16"
+                        "WAW BDG LODZ GD KR POZ "
+                        "WAW BDG 4 "
+                        "BDG WAW 4 "
+                        "WAW POZ 3 "
+                        "POZ WAW 3 "
+                        "WAW LODZ 1 "
+                        "LODZ WAW 1 "
+                        "WAW KR 3 "
+                        "KR WAW 3 "
+                        "WAW GD 3 "
+                        "GD WAW 3 "
+                        "BDG GD 2 "
+                        "GD BDG 2 "
+                        "BDG POZ 2 "
+                        "POZ BDG 2 "
+                        "LODZ KR 3 "
+                        "KR LODZ 3";
+    ss << input;
+    ss >> mp;
+
+    std::vector<Edge*> route = mp.getOptimalRoute({mp.getCity("GD"), mp.getCity("POZ"), mp.getCity("KR")}, mp.getCity("GD"));
+    ASSERT_EQ(route.size(), 8);
+    ASSERT_EQ(route[0]->getSrc()->getName(), "GD");
+    ASSERT_EQ(route[1]->getSrc()->getName(), "BDG");
+    ASSERT_EQ(route[2]->getSrc()->getName(), "POZ");
+    ASSERT_EQ(route[3]->getSrc()->getName(), "WAW");
+    ASSERT_EQ(route[4]->getSrc()->getName(), "KR");
+    ASSERT_EQ(route[5]->getSrc()->getName(), "WAW");
+    ASSERT_EQ(route[6]->getSrc()->getName(), "POZ");
+    ASSERT_EQ(route[7]->getSrc()->getName(), "BDG");
+}

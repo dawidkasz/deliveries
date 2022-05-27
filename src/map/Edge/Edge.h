@@ -20,6 +20,9 @@ public:
 
     size_t getDist() const;
     void setDist(size_t newDist);
+
+    bool operator<(Edge const& e);
+    bool operator>(Edge const& e);
 };
 
 
