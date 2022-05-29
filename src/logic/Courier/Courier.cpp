@@ -52,7 +52,6 @@ void Courier::setNewRoute(Route const& route){
         currentRoute.push(std::make_pair(edge->getDist(), edge->getDst()));
     }
     currentDestination = route.second.back()->getDst();
-    performLocalActions();
 }
 
 void Courier::nextLocaction(){
@@ -61,7 +60,6 @@ void Courier::nextLocaction(){
     auto newLocation = currentRoute.front().second;
     currentLocalization = newLocation;
     currentRoute.pop();
-    performLocalActions();
 }
 
 void Courier::removeLocalPackages(){
@@ -69,9 +67,15 @@ void Courier::removeLocalPackages(){
     auto packages = packagesToDeliver[cityName];
     for(auto package:packages){
         currentLoad-=*package->getVolume();
+        package->setStatus(Status::Delivered);
     }
+    notifier->notifyPackagesDelivery(packages);
     packagesToDeliver[cityName].clear();
 }
+
+std::pair<size_t, City* > Courier::getNextTravelsal() const{
+    if(currentRoute.empty())
+        throw EmptyCourierRoute();
+    return currentRoute.front();
+}
 // bool canDeliverPackage(AbstractPackage const& package) const;
-// void nextLocaction();
-// size_t getReachTime() const;

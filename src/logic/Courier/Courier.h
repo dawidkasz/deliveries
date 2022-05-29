@@ -4,6 +4,7 @@
 #include <queue>
 #include "../Package/AbstractPackage.h"
 #include "../Utils/ObjectsExceptions.h"
+#include "../Interface/INotify.h"
 
 class Courier{
     typedef std::unordered_map<std::string, std::vector<AbstractPackage*> > Container;
@@ -17,19 +18,16 @@ class Courier{
     RouteQueue currentRoute;
     City* defaultLocalization;
     Dimensions* capacity;
-    size_t timeOfReaching=0;
     Container packagesToCollect;
     Container packagesToDeliver;
-    std::vector<Privelages*> privelages;
     Dimensions currentLoad;
     void removeLocalPackages();
     void collectLocalPackages();
+    INotify* notifier=nullptr;
     public:
     Courier()=default;
-    Courier(std::string name, City* defaultLocalization, Dimensions* capacity, std::vector<Privelages*> privelages,City* currentLocalization=nullptr)
-    :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization){
-        for(auto p:privelages)
-            this->privelages.push_back(p);
+    Courier(std::string name, City* defaultLocalization, Dimensions* capacity, City* currentLocalization=nullptr, INotify* notifier=nullptr)
+    :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization), notifier(notifier){
     };
     bool operator==(Courier const& courier) const;
     bool operator!=(Courier const& courier) const;
@@ -39,8 +37,8 @@ class Courier{
     bool canDeliverPackage(AbstractPackage const& package) const;
     void nextLocaction();
     void setNewRoute(Route const& route);
-    size_t getReachTime() const;
     City* getDestination() const;
     City* getCurrentLocation() const;
     Dimensions getCurrentLoad() const;
+    std::pair<size_t, City* > getNextTravelsal() const;
 };

@@ -15,5 +15,4 @@ class Package: public AbstractPackage{
         return "p"+std::to_string(++number_of_packages);
     }
     int getPriority() const{return priority;}
-    std::vector<Privelages*> getPrivelages() const{return std::vector<Privelages*>();}
 };

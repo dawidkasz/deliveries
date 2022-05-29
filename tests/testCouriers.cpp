@@ -8,16 +8,25 @@
 #include "../src/logic/Package/Package.h"
 #include "../src/map/Map/Map.h"
 
+class DummyNotify:public INotify{
+    public:
+    DummyNotify()=default;
+    void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages){
+
+    }
+};
+
 class CourierTest : public ::testing::Test
 {
+
     protected:
+    INotify* notifier;
     City* warsaw;
     City* poznan;
     City* krakow;
     Dimensions* capacity;
     Dimensions* smallVolume;
     Dimensions* bigVolume;
-    std::vector<Privelages*> privelages;
     Courier* courier;
     Courier* routingCourier;
     std::vector<AbstractPackage*> packages;
@@ -49,6 +58,7 @@ class CourierTest : public ::testing::Test
                             "KR LODZ 3";
         ss << input;
         ss >> mp;
+        notifier = new DummyNotify;
         exampleRoute = mp.getShortestPath("POZ", "KR");
         warsaw = mp.getCity("WAW");
         poznan = mp.getCity("POZ");
@@ -56,11 +66,7 @@ class CourierTest : public ::testing::Test
         capacity = new Dimensions(100);
         smallVolume = new Dimensions(10);
         bigVolume = new Dimensions(20);
-        privelages = {
-            new Privelages("test1"),
-            new Privelages("test2"),
-            new Privelages("test3"),
-        };
+
         packagesManyCities = {
             new Package("test", 10, smallVolume, poznan, krakow),
             new Package("test", 10, smallVolume, poznan, warsaw),
@@ -74,8 +80,8 @@ class CourierTest : public ::testing::Test
             new Package("test", 10, smallVolume, warsaw, poznan),
             new Package("test", 10, smallVolume, warsaw, poznan),
         };
-        courier = new Courier("Test", warsaw, capacity, privelages, warsaw);
-        routingCourier = new Courier("Test", poznan, capacity, privelages, poznan);
+        courier = new Courier("Test", warsaw, capacity, warsaw, notifier);
+        routingCourier = new Courier("Test", poznan, capacity, poznan, notifier);
         for(auto p:packages)
             packagesLoad+=*p->getVolume();
         for(auto p:packagesManyCities)
@@ -88,20 +94,19 @@ class CourierTest : public ::testing::Test
         delete bigVolume;
         delete courier;
         delete routingCourier;
-        for(auto p:privelages)
-            delete p;
+        delete notifier;
     }
 };
 
 TEST_F(CourierTest, test_creating_courier){
-    Courier c("Test", warsaw, capacity, privelages, poznan);
+    Courier c("Test", warsaw, capacity, poznan);
     ASSERT_EQ(c.getCurrentLocation()->getName(), poznan->getName());
 }
 
 TEST_F(CourierTest, test_comparing_couriers){
-    Courier c("Test", warsaw, capacity, privelages, poznan);
-    Courier c2("Test", poznan, capacity, privelages, warsaw);
-    Courier c3("Test", warsaw, capacity, privelages, poznan);
+    Courier c("Test", warsaw, capacity, poznan);
+    Courier c2("Test", poznan, capacity, warsaw);
+    Courier c3("Test", warsaw, capacity, poznan);
     ASSERT_TRUE(c==c);
     ASSERT_TRUE(c!=c3);
     ASSERT_FALSE(c==c2);
@@ -148,15 +153,32 @@ TEST_F(CourierTest, test_moving_courier_forward_empty_route){
     ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
 }
 
+TEST_F(CourierTest, test_getting_courier_next_travesal){
+    routingCourier->setNewRoute(exampleRoute);
+    auto trav = routingCourier->getNextTravelsal();
+    ASSERT_EQ(trav.first, 3);
+    ASSERT_EQ(trav.second->getName(), "WAW");
+    routingCourier->nextLocaction();
+    trav = routingCourier->getNextTravelsal();
+    ASSERT_EQ(trav.first, 3);
+    ASSERT_EQ(trav.second->getName(), "KR");
+    routingCourier->nextLocaction();
+    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
+    ASSERT_THROW({routingCourier->getNextTravelsal();}, EmptyCourierRoute);
+}
+
 TEST_F(CourierTest, test_full_courier_work){
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 0);
     routingCourier->addPackagesToCollect(packagesManyCities);
     routingCourier->setNewRoute(exampleRoute);
+    routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 20);
     routingCourier->nextLocaction();
+    routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "WAW");
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 50);
     routingCourier->nextLocaction();
+    routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "KR");
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 30);
 }

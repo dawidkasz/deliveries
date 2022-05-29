@@ -2,7 +2,6 @@
 #include <string>
 #include <memory>
 #include "../Utils/Dimensions.h"
-#include "../Utils/Privelages.h"
 #include "../../map/City/City.h"
 
 enum class Status{ParcelPosted, InTransit, Delivered};
@@ -33,7 +32,6 @@ class AbstractPackage{
     :description(description), priority(priority), dimensions(dimensions), source(source), destination(destination),
     status(Status::ParcelPosted){};
     virtual int getPriority() const = 0;
-    virtual std::vector<Privelages*> getPrivelages() const = 0;
     virtual void print(std::ostream& c) const{
         c<<"Description"<<description<<'\n';
         c<<"Source"<<source<<'\n';
@@ -62,6 +60,9 @@ class AbstractPackage{
     }
     Dimensions* getVolume(){
         return dimensions;
+    }
+    void setStatus(Status status){
+        this->status = status;
     }
 
 };
