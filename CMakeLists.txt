@@ -30,7 +30,7 @@ set(PROJECT_SOURCES
    src/map/Edge/Edge.cpp
    src/map/Edge/Edge.h)
 
-# add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
+add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
 
 # add_executable(testProgramUtils tests/testUtils.cpp ${PROJECT_SOURCES})
 add_executable(testProgramObjects tests/testPackages.cpp tests/testCouriers.cpp tests/testUtils.cpp ${PROJECT_SOURCES})
