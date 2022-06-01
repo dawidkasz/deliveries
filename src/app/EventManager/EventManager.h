@@ -4,9 +4,10 @@
 class EventManager
 {
     private:
-        std::queue<AbstractEvent*> eventQueue;
+        std::priority_queue<AbstractEvent*, std::vector<AbstractEvent*>, std::greater<AbstractEvent*>> eventQueue;
+        std::ostream& os;
     public:
-        EventManager() = default;
+        EventManager(std::ostream& os): os(os) {};
         void addEvent(AbstractEvent* event) noexcept;
-        void printAndFlushEvents() noexcept;
+        void execute_next() noexcept;
 };
