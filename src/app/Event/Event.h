@@ -50,4 +50,4 @@ class PickupPackageEvent : public AbstractEvent
         courier(courier), city(city), package(package) {};
         std::string what() const noexcept;
         void execute() const noexcept;
-}
+};
