@@ -28,7 +28,7 @@ class Courier{
     public:
     Courier()=default;
     Courier(std::string name, City* defaultLocalization, Dimensions* capacity, City* currentLocalization=nullptr, INotify* notifier=nullptr)
-    :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization), notifier(notifier){
+    :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization), notifier(notifier), id(++number_of_couriers){
     };
     bool operator==(Courier const& courier) const;
     bool operator!=(Courier const& courier) const;

@@ -79,3 +79,4 @@ std::pair<size_t, City* > Courier::getNextTravelsal() const{
     return currentRoute.front();
 }
 // bool canDeliverPackage(AbstractPackage const& package) const;
+size_t Courier::number_of_couriers = 0;

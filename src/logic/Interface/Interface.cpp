@@ -1,10 +1,5 @@
 #include "Interface.h"
 
-
-void Interface::addPackage(AbstractPackage* package){
-    unhandledPackages.push_back(package);
-}
-
 bool Interface::moveCourierForward(Courier* courier){
     try{
         courier->nextLocaction();
@@ -29,3 +24,21 @@ void Interface::notifyPackagesDelivery(std::vector<AbstractPackage*> const& pack
     for(auto p:packages)
         packagesArchive.push_back(p);
 }
+
+Courier* Interface::getCourier(size_t id) {
+    return couriers[id];
+}
+
+void Interface::addCourier(Courier* courier){
+    couriers.emplace(courier->getID(), courier);
+}
+
+AbstractPackage* Interface::getPackage(std::string id) {
+    return packages[id];
+}
+
+void Interface::addPackage(AbstractPackage* package){
+    packages.emplace(package->getID(), package);
+    unhandledPackages.push_back(package);
+}
+
