@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
    src/logic/Package/Package.cpp
    src/logic/Package/Package.h
    src/logic/Package/AbstractPackage.h
+   src/logic/Package/PackageFactory.h
    src/logic/Utils/Dimensions.h
    src/map/Map/Map.cpp
    src/map/Map/Map.h

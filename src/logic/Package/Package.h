@@ -1,5 +1,6 @@
-#include <string>
+#pragma once
 #include "AbstractPackage.h"
+#include <string>
 
 
 class Package: public AbstractPackage{

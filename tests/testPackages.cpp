@@ -5,6 +5,7 @@
 #include <utility>
 #include <sstream>
 #include "../src/logic/Package/Package.h"
+#include "../src/logic/Package/PackageFactory.h"
 
 class PackageTest : public ::testing::Test
 {
@@ -14,13 +15,43 @@ class PackageTest : public ::testing::Test
     std::shared_ptr<City> destination = std::make_shared<City> (City("POZ"));
     std::string packageDescription = "test";
     int packagePriority = 10;
+    Map mp;
+    PackageFactory factory;
+    std::unordered_map<std::string, Dimensions*> sizes = {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    };
 
     virtual void SetUp()
     {
-
+        std::stringstream ss;
+        std::string input = "6 16"
+                            "WAW BDG LODZ GD KR POZ "
+                            "WAW BDG 4 "
+                            "BDG WAW 4 "
+                            "WAW POZ 3 "
+                            "POZ WAW 3 "
+                            "WAW LODZ 1 "
+                            "LODZ WAW 1 "
+                            "WAW KR 3 "
+                            "KR WAW 3 "
+                            "WAW GD 3 "
+                            "GD WAW 3 "
+                            "BDG GD 2 "
+                            "GD BDG 2 "
+                            "BDG POZ 2 "
+                            "POZ BDG 2 "
+                            "LODZ KR 3 "
+                            "KR LODZ 3";
+        ss << input;
+        ss >> mp;
+        factory = PackageFactory(sizes, &mp);
     }
     virtual void TearDown(){
         delete d;
+        for(auto s:sizes)
+            delete s.second;
     }
 };
 
@@ -55,3 +86,13 @@ TEST_F(PackageTest, test_printing_package){
     ASSERT_EQ(ss.str(), ss2.str());
 }
 
+TEST_F(PackageTest, test_creating_package_by_factory){
+    auto package = factory.createPackage("WAW", "KR", "small", 1, "Test");
+    ASSERT_EQ(package->getDescription(), "Test");
+    ASSERT_EQ(package->getPriority(), 1);
+    ASSERT_EQ(package->getSource()->getName(), "WAW");
+    ASSERT_EQ(package->getDestination()->getName(), "KR");
+    ASSERT_EQ(package->getVolume()->getVolume(), sizes["small"]->getVolume());
+    // ASSERT_EQ(p.getID(), "p1");
+    delete package;
+}
