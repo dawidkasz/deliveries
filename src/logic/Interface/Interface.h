@@ -16,7 +16,8 @@ class Interface:public INotify{
 public:
     PackageFactory packageFactory;
     Interface()=default;
-    Interface(Sizes const& packagesDimension, Map* map):packageFactory(PackageFactory(packagesDimension, map)){};
+    Interface(Sizes const& packagesDimension, Map* map)
+    :packageFactory(PackageFactory(packagesDimension, map)){};
     void addCourier();
     Courier* getCourier();
     AbstractPackage* getPackage();

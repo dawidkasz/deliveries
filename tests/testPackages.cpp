@@ -96,3 +96,9 @@ TEST_F(PackageTest, test_creating_package_by_factory){
     // ASSERT_EQ(p.getID(), "p1");
     delete package;
 }
+
+TEST_F(PackageTest, test_creating_package_by_factory_exceptions){
+    ASSERT_THROW({ factory.createPackage("WW", "KR", "small", 1, "Test");}, InvalidPackageData);
+    ASSERT_THROW({ factory.createPackage("WAW", "KRA", "small", 1, "Test");}, InvalidPackageData);
+    ASSERT_THROW({ factory.createPackage("WAW", "KR", "massive", 1, "Test");}, InvalidPackageData);
+}
