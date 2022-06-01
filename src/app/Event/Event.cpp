@@ -1,7 +1,7 @@
 #include <string>
 #include "Event.h"
 
-std::string DeliveryEvent::getStr() const noexcept
+std::string DeliveryEvent::what() const noexcept
 {
     std::string result = "";
     result += "Courier " + courier->getID();
