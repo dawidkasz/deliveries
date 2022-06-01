@@ -5,6 +5,7 @@
 #include <utility>
 #include <sstream>
 #include "../src/logic/Courier/Courier.h"
+#include "../src/logic/Courier/CourierFactory.h"
 #include "../src/logic/Package/Package.h"
 #include "../src/map/Map/Map.h"
 
@@ -35,6 +36,12 @@ class CourierTest : public ::testing::Test
     Dimensions packagesManyLoad;
     Map mp;
     std::pair<size_t, std::vector<Edge*>> exampleRoute;
+    CourierFactory factory;
+    std::unordered_map<std::string, Dimensions*> capacities = {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    };
     virtual void SetUp()
     {
         std::stringstream ss;
@@ -87,6 +94,8 @@ class CourierTest : public ::testing::Test
         for(auto p:packagesManyCities)
             packagesManyLoad+=*p->getVolume();
 
+        factory = CourierFactory(capacities, &mp, notifier);
+
     }
     virtual void TearDown(){
         delete capacity;
@@ -95,12 +104,26 @@ class CourierTest : public ::testing::Test
         delete courier;
         delete routingCourier;
         delete notifier;
+        for(auto s:capacities)
+            delete s.second;
     }
 };
 
 TEST_F(CourierTest, test_creating_courier){
     Courier c("Test", warsaw, capacity, poznan);
     ASSERT_EQ(c.getCurrentLocation()->getName(), poznan->getName());
+}
+
+TEST_F(CourierTest, test_creating_courier_by_factory){
+    auto courier = factory.createCourier("Test", "WAW", "small", "WAW");
+    ASSERT_EQ(courier->getCurrentLocation()->getName(), "WAW");
+    delete courier;
+}
+
+TEST_F(CourierTest, test_creating_courier_by_factory_exceptions){
+    ASSERT_THROW({factory.createCourier("Test", "WW", "small", "WAW");}, InvalidCourierData);
+    ASSERT_THROW({factory.createCourier("Test", "WAW", "smal", "WAW");}, InvalidCourierData);
+    ASSERT_THROW({factory.createCourier("Test", "WAW", "small", "WW");}, InvalidCourierData);
 }
 
 TEST_F(CourierTest, test_comparing_couriers){

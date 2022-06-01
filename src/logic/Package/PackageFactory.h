@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <unordered_map>
 #include "Package.h"
 #include "../../map/Map/Map.h"
 
@@ -10,7 +11,7 @@ struct InvalidPackageData : public std::exception
     InvalidPackageData(std::string message):message(message){};
 	const char * what () const throw ()
     {
-    	return (message+"Provided package data are invalid:\n").c_str();
+    	return ("Provided package data are invalid:\n"+message).c_str();
     }
 };
 
