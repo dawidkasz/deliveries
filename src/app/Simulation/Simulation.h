@@ -2,6 +2,7 @@
 #include <queue>
 #include "../Event/Event.h"
 #include "../../logic/Interface/Interface.h"
+
 class EventCompPtr
 {
     public:
@@ -11,7 +12,7 @@ class EventCompPtr
         }
 };
 
-class Symulation
+class Simulation
 {
     private:
         std::priority_queue<AbstractEvent*, std::vector<AbstractEvent*>, EventCompPtr> eventQueue;
@@ -19,7 +20,7 @@ class Symulation
         size_t current_time;
     public:
         Interface* interface;
-        Symulation(std::ostream& os, Interface* interface): os(os), interface(interface) {};
+        Simulation(std::ostream& os, Interface* interface): os(os), interface(interface), current_time(0) {};
         void addEvent(AbstractEvent* event) noexcept;
         void execute_next() noexcept;
 };

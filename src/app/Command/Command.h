@@ -1,19 +1,19 @@
 #pragma once
-#include "../Symulation/Symulation.h"
+#include "../Simulation/Simulation.h"
 
 class AbstractCommand
 {
     private:
-        Symulation* symulation;
+        Simulation* symulation;
     public:
         virtual void execute() const noexcept;
-        AbstractCommand(Symulation* symulation) : symulation(symulation) {};
+        AbstractCommand(Simulation* symulation) : symulation(symulation) {};
 };
 
 class NextStepCommand : public AbstractCommand
 {
     public:
-        NextStepCommand(Symulation* symulation) : AbstractCommand(symulation) {};
+        NextStepCommand(Simulation* symulation) : AbstractCommand(symulation) {};
         void execute() const noexcept;
 };
 

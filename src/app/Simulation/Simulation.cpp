@@ -1,11 +1,11 @@
-#include "Symulation.h"
+#include "Simulation.h"
 
-void Symulation::addEvent(AbstractEvent* event) noexcept
+void Simulation::addEvent(AbstractEvent* event) noexcept
 {
     eventQueue.push(event);
 }
 
-void Symulation::execute_next() noexcept
+void Simulation::execute_next() noexcept
 {
     auto to_execute = eventQueue.top();
     to_execute->execute();
