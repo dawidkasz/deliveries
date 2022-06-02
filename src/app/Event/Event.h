@@ -10,10 +10,14 @@ class AbstractEvent
     public:
         AbstractEvent(size_t time) : time(time) {};
         virtual std::string what() const noexcept = 0;
-        virtual void execute() const noexcept = 0;
+        virtual void execute() const = 0;
         bool operator<(const AbstractEvent& other) const
         {
             return time<other.time;
+        }
+        size_t getTime() const
+        {
+            return time;
         }
 };
 
@@ -28,7 +32,7 @@ class DeliveryEvent : public AbstractEvent
         DeliveryEvent(Courier* courier, City* city, AbstractPackage* package, size_t time) :
             courier(courier), city(city), package(package), AbstractEvent(time) {};
         std::string what() const noexcept;
-        void execute() const noexcept;
+        void execute() const;
 };
 
 class ArriveAtLocEvent : public AbstractEvent
@@ -40,7 +44,7 @@ class ArriveAtLocEvent : public AbstractEvent
         ArriveAtLocEvent(Courier* courier, City* city, size_t time) :
             courier(courier), city(city), AbstractEvent(time) {};
         std::string what() const noexcept;
-        void execute() const noexcept;
+        void execute() const;
 };
 
 class PickupPackageEvent : public AbstractEvent
@@ -53,5 +57,5 @@ class PickupPackageEvent : public AbstractEvent
         PickupPackageEvent(Courier* courier, City* city, AbstractPackage* package, size_t time) :
             courier(courier), city(city), package(package), AbstractEvent(time) {};
         std::string what() const noexcept;
-        void execute() const noexcept;
+        void execute() const;
 };

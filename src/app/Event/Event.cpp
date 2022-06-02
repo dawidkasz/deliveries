@@ -9,3 +9,28 @@ std::string DeliveryEvent::what() const noexcept
     result += "to city " + city->getName();
     return result;
 };
+
+std::string ArriveAtLocEvent::what() const noexcept
+{
+    return "";
+};
+
+std::string PickupPackageEvent::what() const noexcept
+{
+    return "";
+};
+
+void DeliveryEvent::execute() const
+{
+
+}
+
+void ArriveAtLocEvent::execute() const
+{
+
+}
+
+void PickupPackageEvent::execute() const
+{
+
+}
