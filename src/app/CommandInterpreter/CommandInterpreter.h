@@ -1,3 +1,4 @@
+#pragma once
 #include "../Symulation/Symulation.h"
 #include <vector>
 #include <string>

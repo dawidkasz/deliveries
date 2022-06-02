@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include "../../logic/Courier/Courier.h"
 #include "../../map/City/City.h"
