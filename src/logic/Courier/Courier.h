@@ -11,7 +11,7 @@ class Courier
 {
     typedef std::unordered_map<std::string, std::vector<AbstractPackage*> > Container;
     typedef std::vector<Edge*> Route;
-    typedef std::queue<City*> RouteQueue;
+    typedef std::queue<Edge*> RouteQueue;
     static size_t number_of_couriers;
     size_t id;
     std::string name;
@@ -43,5 +43,7 @@ public:
     City* getDestination() const;
     City* getCurrentLocation() const;
     Dimensions getCurrentLoad() const;
+    Dimensions* getCapacity() const;
     City* getNextTravelsal() const;
+    size_t getDistToNextTravelsal() const;
 };
