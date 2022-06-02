@@ -3,9 +3,9 @@
 #include <string>
 
 
-class Package: public AbstractPackage{
+class Package : public AbstractPackage {
     static size_t number_of_packages;
-    public:
+public:
     Package(std::string description, int priority, Dimensions* dimensions, City* source, City* destination)
     :AbstractPackage(description, priority, dimensions, source, destination){
         id = createID();

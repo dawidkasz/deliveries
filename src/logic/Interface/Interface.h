@@ -4,7 +4,7 @@
 #include "../Package/PackageFactory.h"
 #include "../../map/Map/Map.h"
 #include "INotify.h"
-class Interface:public INotify{
+class Interface : public INotify {
     typedef std::pair<size_t, std::vector<Edge*> > Route;
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
     std::unordered_map<size_t, Courier*> couriers;
@@ -12,7 +12,7 @@ class Interface:public INotify{
     std::unordered_map<std::string, Dimensions*> couriersCapacity;
     std::vector<AbstractPackage*> unhandledPackages;
     std::vector<AbstractPackage*> packagesArchive;
-    protected:
+protected:
     void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages);
 public:
     PackageFactory packageFactory;

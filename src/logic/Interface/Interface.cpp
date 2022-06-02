@@ -7,8 +7,9 @@ void Interface::addPackage(AbstractPackage* package){
 
 bool Interface::moveCourierForward(Courier* courier){
     try{
-        courier->nextLocaction();
-    }catch(EmptyCourierRoute const& e){
+        courier->nextLocation();
+    }
+    catch(EmptyCourierRoute const& e){
         return false;
     }
     return true;

@@ -54,7 +54,7 @@ void Courier::setNewRoute(Route const& route){
     currentDestination = route.second.back()->getDst();
 }
 
-void Courier::nextLocaction(){
+void Courier::nextLocation(){
     if(currentRoute.empty())
         throw EmptyCourierRoute();
     auto newLocation = currentRoute.front().second;
@@ -79,3 +79,7 @@ std::pair<size_t, City* > Courier::getNextTravelsal() const{
     return currentRoute.front();
 }
 // bool canDeliverPackage(AbstractPackage const& package) const;
+
+std::string Courier::getName() const{
+    return name;
+}

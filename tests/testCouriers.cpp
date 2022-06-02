@@ -163,17 +163,17 @@ TEST_F(CourierTest, test_assigning_new_route_exception){
 TEST_F(CourierTest, test_moving_courier_forward){
     routingCourier->setNewRoute(exampleRoute);
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "POZ");
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "WAW");
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "KR");
 }
 
 TEST_F(CourierTest, test_moving_courier_forward_empty_route){
     routingCourier->setNewRoute(exampleRoute);
-    routingCourier->nextLocaction();
-    routingCourier->nextLocaction();
-    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
+    routingCourier->nextLocation();
+    routingCourier->nextLocation();
+    ASSERT_THROW({routingCourier->nextLocation();}, EmptyCourierRoute);
 }
 
 TEST_F(CourierTest, test_getting_courier_next_travesal){
@@ -181,12 +181,12 @@ TEST_F(CourierTest, test_getting_courier_next_travesal){
     auto trav = routingCourier->getNextTravelsal();
     ASSERT_EQ(trav.first, 3);
     ASSERT_EQ(trav.second->getName(), "WAW");
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     trav = routingCourier->getNextTravelsal();
     ASSERT_EQ(trav.first, 3);
     ASSERT_EQ(trav.second->getName(), "KR");
-    routingCourier->nextLocaction();
-    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
+    routingCourier->nextLocation();
+    ASSERT_THROW({routingCourier->nextLocation();}, EmptyCourierRoute);
     ASSERT_THROW({routingCourier->getNextTravelsal();}, EmptyCourierRoute);
 }
 
@@ -196,11 +196,11 @@ TEST_F(CourierTest, test_full_courier_work){
     routingCourier->setNewRoute(exampleRoute);
     routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 20);
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "WAW");
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 50);
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     routingCourier->performLocalActions();
     ASSERT_EQ(routingCourier->getCurrentLocation()->getName(), "KR");
     ASSERT_EQ(routingCourier->getCurrentLoad().getVolume(), 30);
