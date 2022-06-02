@@ -22,5 +22,5 @@ class Simulation
         Interface* interface;
         Simulation(std::ostream& os, Interface* interface): os(os), interface(interface), current_time(0) {};
         void addEvent(AbstractEvent* event) noexcept;
-        void execute_next() noexcept;
+        void executeAllNext() noexcept;
 };
