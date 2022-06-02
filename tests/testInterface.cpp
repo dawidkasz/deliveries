@@ -85,8 +85,10 @@ TEST_F(InterfaceTest, test_adding_package_to_interface){
 TEST_F(InterfaceTest, test_setting_courier_route){
     auto courier = interface.courierFactory.createCourier("test", "POZ", "big", "POZ");
     interface.addCourier(courier);
+    ASSERT_TRUE(interface.isAvailable(courier));
     auto path = mp.getShortestPath("POZ", "KR");
     interface.setCourierNewRoute(courier, path);
+    ASSERT_FALSE(interface.isAvailable(courier));
     ASSERT_EQ(courier->getDestination()->getName(), "KR");
     ASSERT_EQ(courier->getNextTravelsal().second->getName(), "WAW");
 }
