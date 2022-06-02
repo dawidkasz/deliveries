@@ -9,9 +9,9 @@ class AbstractEvent
     public:
         virtual std::string what() const noexcept = 0;
         virtual void execute() const noexcept = 0;
-        bool operator>(const AbstractEvent& other) const
+        bool operator<(const AbstractEvent& other) const
         {
-            return time>other.time;
+            return time<other.time;
         }
 };
 

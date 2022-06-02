@@ -7,7 +7,8 @@
 #include "../Utils/ObjectsExceptions.h"
 #include "../Interface/INotify.h"
 
-class Courier{
+class Courier
+{
     typedef std::unordered_map<std::string, std::vector<AbstractPackage*> > Container;
     typedef std::pair<size_t, std::vector<Edge*> > Route;
     typedef std::queue<std::pair<size_t, City* > > RouteQueue;
@@ -25,7 +26,7 @@ class Courier{
     void removeLocalPackages();
     void collectLocalPackages();
     INotify* notifier=nullptr;
-    public:
+public:
     Courier()=default;
     Courier(std::string name, City* defaultLocalization, Dimensions* capacity, City* currentLocalization=nullptr, INotify* notifier=nullptr)
     :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization), notifier(notifier), id(++number_of_couriers){
@@ -36,10 +37,11 @@ class Courier{
     void addPackagesToCollect(std::vector<AbstractPackage*> const& packages);
     void performLocalActions();
     bool canDeliverPackage(AbstractPackage const& package) const;
-    void nextLocaction();
+    void nextLocation();
     void setNewRoute(Route const& route);
     City* getDestination() const;
     City* getCurrentLocation() const;
     Dimensions getCurrentLoad() const;
+    std::string getName() const;
     std::pair<size_t, City* > getNextTravelsal() const;
 };

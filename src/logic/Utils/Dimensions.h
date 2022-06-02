@@ -4,13 +4,13 @@
 
 class Dimensions{
     double volume=0;
-    public:
+public:
     Dimensions()=default;
-    Dimensions(double volume):volume(volume){
+    Dimensions(double volume) : volume(volume){
         if(volume<0)
             throw std::invalid_argument("Volume cannot be less than 0");
     };
-    Dimensions(double sideA, double sideB, double sideC):Dimensions(sideA*sideB*sideC){};
+    Dimensions(double sideA, double sideB, double sideC) : Dimensions(sideA*sideB*sideC){};
     double getVolume() const{
         return volume;
     }
