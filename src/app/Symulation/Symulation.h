@@ -1,21 +1,24 @@
 #include <queue>
 #include "../Event/Event.h"
+#include "../../logic/Interface/Interface.h"
 class EventCompPtr
 {
-    bool operator()(AbstractEvent* a, AbstractEvent* b)
-    {
-        return *a < *b;
-    }
+    public:
+        bool operator()(AbstractEvent* a, AbstractEvent* b)
+        {
+            return *a < *b;
+        }
 };
 
-class EventManager
+class Symulation
 {
     private:
         std::priority_queue<AbstractEvent*, std::vector<AbstractEvent*>, EventCompPtr> eventQueue;
         std::ostream& os;
         size_t current_time;
     public:
-        EventManager(std::ostream& os): os(os){};
+        Interface* interface;
+        Symulation(std::ostream& os, Interface* interface): os(os), interface(interface) {};
         void addEvent(AbstractEvent* event) noexcept;
         void execute_next() noexcept;
 };

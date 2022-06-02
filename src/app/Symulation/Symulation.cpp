@@ -1,11 +1,11 @@
-#include "EventManager.h"
+#include "Symulation.h"
 
-void EventManager::addEvent(AbstractEvent* event) noexcept
+void Symulation::addEvent(AbstractEvent* event) noexcept
 {
     eventQueue.push(event);
 }
 
-void EventManager::execute_next() noexcept
+void Symulation::execute_next() noexcept
 {
     auto to_execute = eventQueue.top();
     to_execute->execute();

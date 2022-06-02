@@ -15,6 +15,12 @@ FetchContent_MakeAvailable(googletest)
 set(PROJECT_SOURCES
    src/app/CommandInterpreter/CommandInterpreter.cpp
    src/app/CommandInterpreter/CommandInterpreter.h
+   src/app/Command/Command.cpp
+   src/app/Command/Command.h
+   src/app/Event/Event.cpp
+   src/app/Event/Event.h
+   src/app/Symulation/Symulation.cpp
+   src/app/Symulation/Symulation.h
    src/logic/Courier/Courier.cpp
    src/logic/Courier/Courier.h
    src/logic/Interface/Interface.cpp
