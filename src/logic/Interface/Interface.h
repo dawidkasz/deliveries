@@ -1,6 +1,7 @@
+#pragma once
 #include <unordered_map>
 #include "../Courier/Courier.h"
-#include "../Package/AbstractPackage.h"
+#include "../Courier/CourierFactory.h"
 #include "../Package/PackageFactory.h"
 #include "../../map/Map/Map.h"
 #include "INotify.h"
@@ -8,20 +9,22 @@ class Interface : public INotify {
     typedef std::pair<size_t, std::vector<Edge*> > Route;
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
     std::unordered_map<size_t, Courier*> couriers;
-    std::unordered_map<size_t, AbstractPackage*> packages;
-    std::unordered_map<std::string, Dimensions*> couriersCapacity;
+    std::unordered_map<std::string, AbstractPackage*> packages;
     std::vector<AbstractPackage*> unhandledPackages;
     std::vector<AbstractPackage*> packagesArchive;
 protected:
     void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages);
 public:
     PackageFactory packageFactory;
+    CourierFactory courierFactory;
     Interface()=default;
-    Interface(Sizes const& packagesDimension, Map* map)
-    :packageFactory(PackageFactory(packagesDimension, map)){};
-    void addCourier();
-    Courier* getCourier();
-    AbstractPackage* getPackage();
+    Interface(Sizes const& packagesDimension, Sizes const& couriersCapacity, Map* map)
+    :packageFactory(PackageFactory(packagesDimension, map)),
+     courierFactory(CourierFactory(couriersCapacity, map, this)){};
+
+    Courier* getCourier(size_t id) ;
+    AbstractPackage* getPackage(std::string id) ;
+    void addCourier(Courier* courier);
     void addPackage(AbstractPackage* package);
     bool moveCourierForward(Courier* courier);
     void performCourierActions(Courier* courier);
@@ -29,4 +32,13 @@ public:
     void assignCourierPackages(Courier* courier, std::vector<AbstractPackage*> const& packages);
 
     std::vector<Courier*> assignUnhandledPackages();
+
+    ~Interface(){
+        for(auto c:couriers)
+            delete c.second;
+        unhandledPackages.clear();
+        packagesArchive.clear();
+        for(auto p:packages)
+            delete p.second;
+    }
 };
