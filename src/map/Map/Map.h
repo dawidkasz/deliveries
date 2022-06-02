@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include <utility>
+#include "limits.h"
 #include "../City/City.h"
 #include "../Edge/Edge.h"
 
@@ -17,7 +18,6 @@ private:
     std::unordered_map<std::string, std::unique_ptr<City>> cities;
     std::vector<std::unique_ptr<Edge>> edges;
 
-    pairDistPredecessor getAllDistances(City* source) const;
     bool hasCycle(std::vector<Edge*> edges) const;
     std::vector<Edge*> multiFragment(std::vector<Edge*> edges, size_t numOfCities) const;
 public:
@@ -33,6 +33,8 @@ public:
 
     std::unordered_map<std::string, std::unique_ptr<City>>::iterator begin();
     std::unordered_map<std::string, std::unique_ptr<City>>::iterator end();
+
+    pairDistPredecessor getAllDistances(City* source) const;
 
     std::pair<size_t, std::vector<Edge*>> getShortestPath(City* source, City* destination) const;
     std::pair<size_t, std::vector<Edge*>> getShortestPath(std::string source, std::string destination) const;

@@ -53,3 +53,47 @@ bool Interface::isAvailable(Courier* c){
     return availableCouriers.find(c)!=availableCouriers.end();
 }
 
+std::vector<Courier*> Interface::assignUnhandledPackages(){
+    std::unordered_map<Courier*, Dimensions> potentialCourierLoad;
+    std::unordered_map<Courier*, std::unordered_set<City*>> usedCouriers;
+
+    for(AbstractPackage* package : unhandledPackages){
+        std::unordered_map<City*, size_t> distances = map->getAllDistances(package->getSource()).first;
+
+        size_t minDist = ULONG_MAX;
+        Courier* assignedCourier = nullptr;
+        for(auto pairIdCourier : couriers){
+            Courier* courier = pairIdCourier.second;
+
+            if(!isAvailable(courier) || potentialCourierLoad[courier] + *package->getVolume() > *courier->getCapacity())
+                continue;
+
+            if(assignedCourier == nullptr || distances[courier->getCurrentLocation()] < minDist){
+                assignedCourier = courier;
+                minDist = distances[courier->getCurrentLocation()];
+            }
+        }
+
+        if(assignedCourier){
+            assignedCourier->addPackagesToCollect({package});
+            potentialCourierLoad[assignedCourier] += *package->getVolume();
+            usedCouriers[assignedCourier].insert(package->getSource());
+            usedCouriers[assignedCourier].insert(package->getDestination());
+        }
+    }
+
+    std::vector<Courier*> couriersToSend;
+    for(auto it : usedCouriers){
+        Courier* courier = it.first;
+        std::vector<City*> citiesOnRoute = {courier->getCurrentLocation()};
+        for(City* c : it.second){
+            citiesOnRoute.push_back(c);
+        }
+
+        std::vector<Edge*> newRoute = map->getOptimalRoute(citiesOnRoute, courier->getCurrentLocation());
+        courier->setNewRoute(newRoute);
+        couriersToSend.push_back(courier);
+    }
+
+    return couriersToSend;
+}

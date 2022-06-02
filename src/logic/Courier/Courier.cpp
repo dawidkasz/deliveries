@@ -49,7 +49,7 @@ void Courier::setNewRoute(Route const& route){
     if(currentLocalization->getName()!=route[0]->getSrc()->getName())
         throw BadStartingRoutePoint();
     for(auto edge:route){
-        currentRoute.push(edge->getDst());
+        currentRoute.push(edge);
     }
     currentDestination = route.back()->getDst();
 }
@@ -57,7 +57,7 @@ void Courier::setNewRoute(Route const& route){
 void Courier::nextLocation(){
     if(currentRoute.empty())
         throw EmptyCourierRoute();
-    auto newLocation = currentRoute.front();
+    auto newLocation = currentRoute.front()->getDst();
     currentLocalization = newLocation;
     currentRoute.pop();
     if(currentRoute.empty())
@@ -78,12 +78,21 @@ void Courier::removeLocalPackages(){
 City* Courier::getNextTravelsal() const{
     if(currentRoute.empty())
         throw EmptyCourierRoute();
-    return currentRoute.front();
+    return currentRoute.front()->getDst();
 }
-// bool canDeliverPackage(AbstractPackage const& package) const;
+
+size_t Courier::getDistToNextTravelsal() const{
+    if(currentRoute.empty())
+        throw EmptyCourierRoute();
+    return currentRoute.front()->getDist();
+}
 
 std::string Courier::getName() const{
     return name;
+}
+
+Dimensions* Courier::getCapacity() const{
+    return capacity;
 }
 
 size_t Courier::number_of_couriers = 0;

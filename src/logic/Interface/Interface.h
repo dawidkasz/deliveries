@@ -14,6 +14,7 @@ class Interface:public INotify{
     std::unordered_map<std::string, AbstractPackage*> packages;
     std::vector<AbstractPackage*> unhandledPackages;
     std::vector<AbstractPackage*> packagesArchive;
+    Map* map;
 protected:
     void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages);
     void notifyDestinationReaching(Courier* courier);
@@ -22,8 +23,8 @@ public:
     CourierFactory courierFactory;
     Interface()=default;
     Interface(Sizes const& packagesDimension, Sizes const& couriersCapacity, Map* map)
-    :packageFactory(PackageFactory(packagesDimension, map)),
-     courierFactory(CourierFactory(couriersCapacity, map, this)){};
+        : map(map), packageFactory(PackageFactory(packagesDimension, map)),
+          courierFactory(CourierFactory(couriersCapacity, map, this)){};
 
     Courier* getCourier(size_t id) ;
     AbstractPackage* getPackage(std::string id) ;

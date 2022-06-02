@@ -24,8 +24,8 @@ class InterfaceTest: public ::testing::Test {
     Interface interface;
     virtual void SetUp(){
         std::stringstream ss;
-        std::string input = "6 16"
-                            "WAW BDG LODZ GD KR POZ "
+        std::string input = "7 18"
+                            "WAW BDG LODZ GD KR POZ KAT "
                             "WAW BDG 4 "
                             "BDG WAW 4 "
                             "WAW POZ 3 "
@@ -41,7 +41,9 @@ class InterfaceTest: public ::testing::Test {
                             "BDG POZ 2 "
                             "POZ BDG 2 "
                             "LODZ KR 3 "
-                            "KR LODZ 3";
+                            "KR LODZ 3 "
+                            "KAT KR 2 "
+                            "KR KAT 2";
         ss << input;
         ss >> mp;
         emptyInterface = Interface(packageDimensions, courierCapacities, &mp);
@@ -56,6 +58,7 @@ class InterfaceTest: public ::testing::Test {
         interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
         interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
         interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
+        interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
     }
     virtual void TearDown(){
         for(auto p:packageDimensions)
