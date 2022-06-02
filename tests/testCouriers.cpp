@@ -182,11 +182,11 @@ TEST_F(CourierTest, test_getting_courier_next_travesal){
     routingCourier->setNewRoute(exampleRoute);
     auto trav = routingCourier->getNextTravelsal();
     ASSERT_EQ(trav->getName(), "WAW");
-    routingCourier->nextLocaction();
+    routingCourier->nextLocation();
     trav = routingCourier->getNextTravelsal();
     ASSERT_EQ(trav->getName(), "KR");
-    routingCourier->nextLocaction();
-    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
+    routingCourier->nextLocation();
+    ASSERT_THROW({routingCourier->nextLocation();}, EmptyCourierRoute);
     ASSERT_THROW({routingCourier->getNextTravelsal();}, EmptyCourierRoute);
 }
 

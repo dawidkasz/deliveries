@@ -39,6 +39,7 @@ public:
     bool canDeliverPackage(AbstractPackage const& package) const;
     void nextLocation();
     void setNewRoute(Route const& route);
+    std::string getName() const;
     City* getDestination() const;
     City* getCurrentLocation() const;
     Dimensions getCurrentLoad() const;
