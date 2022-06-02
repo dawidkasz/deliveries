@@ -6,8 +6,8 @@
 #include "../Package/PackageFactory.h"
 #include "../../map/Map/Map.h"
 #include "INotify.h"
-class Interface : public INotify {
-    typedef std::pair<size_t, std::vector<Edge*> > Route;
+class Interface:public INotify{
+    typedef std::vector<Edge*> Route;
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
     std::unordered_map<size_t, Courier*> couriers;
     std::unordered_set<Courier*> availableCouriers;

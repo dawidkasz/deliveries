@@ -36,7 +36,7 @@ class CourierTest : public ::testing::Test
     Dimensions packagesLoad;
     Dimensions packagesManyLoad;
     Map mp;
-    std::pair<size_t, std::vector<Edge*>> exampleRoute;
+    std::vector<Edge*> exampleRoute;
     CourierFactory factory;
     std::unordered_map<std::string, Dimensions*> capacities = {
         {"small", new Dimensions(10)},
@@ -67,7 +67,6 @@ class CourierTest : public ::testing::Test
         ss << input;
         ss >> mp;
         notifier = new DummyNotify;
-        exampleRoute = mp.getShortestPath("POZ", "KR");
         warsaw = mp.getCity("WAW");
         poznan = mp.getCity("POZ");
         krakow = mp.getCity("KR");
@@ -94,6 +93,8 @@ class CourierTest : public ::testing::Test
             packagesLoad+=*p->getVolume();
         for(auto p:packagesManyCities)
             packagesManyLoad+=*p->getVolume();
+        exampleRoute = mp.getShortestPath("POZ", "KR").second;
+
 
         factory = CourierFactory(capacities, &mp, notifier);
 
@@ -180,14 +181,12 @@ TEST_F(CourierTest, test_moving_courier_forward_empty_route){
 TEST_F(CourierTest, test_getting_courier_next_travesal){
     routingCourier->setNewRoute(exampleRoute);
     auto trav = routingCourier->getNextTravelsal();
-    ASSERT_EQ(trav.first, 3);
-    ASSERT_EQ(trav.second->getName(), "WAW");
-    routingCourier->nextLocation();
+    ASSERT_EQ(trav->getName(), "WAW");
+    routingCourier->nextLocaction();
     trav = routingCourier->getNextTravelsal();
-    ASSERT_EQ(trav.first, 3);
-    ASSERT_EQ(trav.second->getName(), "KR");
-    routingCourier->nextLocation();
-    ASSERT_THROW({routingCourier->nextLocation();}, EmptyCourierRoute);
+    ASSERT_EQ(trav->getName(), "KR");
+    routingCourier->nextLocaction();
+    ASSERT_THROW({routingCourier->nextLocaction();}, EmptyCourierRoute);
     ASSERT_THROW({routingCourier->getNextTravelsal();}, EmptyCourierRoute);
 }
 

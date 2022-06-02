@@ -46,18 +46,18 @@ Dimensions Courier::getCurrentLoad() const{
     return currentLoad;
 }
 void Courier::setNewRoute(Route const& route){
-    if(currentLocalization->getName()!=route.second[0]->getSrc()->getName())
+    if(currentLocalization->getName()!=route[0]->getSrc()->getName())
         throw BadStartingRoutePoint();
-    for(auto edge:route.second){
-        currentRoute.push(std::make_pair(edge->getDist(), edge->getDst()));
+    for(auto edge:route){
+        currentRoute.push(edge->getDst());
     }
-    currentDestination = route.second.back()->getDst();
+    currentDestination = route.back()->getDst();
 }
 
 void Courier::nextLocation(){
     if(currentRoute.empty())
         throw EmptyCourierRoute();
-    auto newLocation = currentRoute.front().second;
+    auto newLocation = currentRoute.front();
     currentLocalization = newLocation;
     currentRoute.pop();
     if(currentRoute.empty())
@@ -75,7 +75,7 @@ void Courier::removeLocalPackages(){
     packagesToDeliver[cityName].clear();
 }
 
-std::pair<size_t, City* > Courier::getNextTravelsal() const{
+City* Courier::getNextTravelsal() const{
     if(currentRoute.empty())
         throw EmptyCourierRoute();
     return currentRoute.front();
