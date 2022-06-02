@@ -15,6 +15,7 @@ class DummyNotify:public INotify{
     void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages){
 
     }
+    void notifyDestinationReaching(Courier* c){}
 };
 
 class CourierTest : public ::testing::Test

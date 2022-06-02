@@ -15,6 +15,7 @@ void Interface::performCourierActions(Courier* courier){
 }
 
 void Interface::setCourierNewRoute(Courier* courier, Interface::Route const& route){
+    availableCouriers.erase(courier);
     courier->setNewRoute(route);
 }
 
@@ -32,6 +33,7 @@ Courier* Interface::getCourier(size_t id) {
 
 void Interface::addCourier(Courier* courier){
     couriers.emplace(courier->getID(), courier);
+    availableCouriers.insert(courier);
 }
 
 AbstractPackage* Interface::getPackage(std::string id) {
@@ -41,5 +43,13 @@ AbstractPackage* Interface::getPackage(std::string id) {
 void Interface::addPackage(AbstractPackage* package){
     packages.emplace(package->getID(), package);
     unhandledPackages.push_back(package);
+}
+
+void Interface::notifyDestinationReaching(Courier* courier){
+    availableCouriers.insert(courier);
+}
+
+bool Interface::isAvailable(Courier* c){
+    return availableCouriers.find(c)!=availableCouriers.end();
 }
 

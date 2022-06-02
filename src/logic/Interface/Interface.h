@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <unordered_set>
 #include "../Courier/Courier.h"
 #include "../Courier/CourierFactory.h"
 #include "../Package/PackageFactory.h"
@@ -9,11 +10,13 @@ class Interface : public INotify {
     typedef std::pair<size_t, std::vector<Edge*> > Route;
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
     std::unordered_map<size_t, Courier*> couriers;
+    std::unordered_set<Courier*> availableCouriers;
     std::unordered_map<std::string, AbstractPackage*> packages;
     std::vector<AbstractPackage*> unhandledPackages;
     std::vector<AbstractPackage*> packagesArchive;
 protected:
     void notifyPackagesDelivery(std::vector<AbstractPackage*> const& packages);
+    void notifyDestinationReaching(Courier* courier);
 public:
     PackageFactory packageFactory;
     CourierFactory courierFactory;
@@ -30,7 +33,7 @@ public:
     void performCourierActions(Courier* courier);
     void setCourierNewRoute(Courier* courier, Route const& route);
     void assignCourierPackages(Courier* courier, std::vector<AbstractPackage*> const& packages);
-
+    bool isAvailable(Courier* c);
     std::vector<Courier*> assignUnhandledPackages();
 
     ~Interface(){

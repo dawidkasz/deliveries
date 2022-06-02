@@ -60,6 +60,8 @@ void Courier::nextLocation(){
     auto newLocation = currentRoute.front().second;
     currentLocalization = newLocation;
     currentRoute.pop();
+    if(currentRoute.empty())
+        notifier->notifyDestinationReaching(this);
 }
 
 void Courier::removeLocalPackages(){

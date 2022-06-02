@@ -19,10 +19,12 @@ set(PROJECT_SOURCES
    src/logic/Courier/Courier.h
    src/logic/Interface/Interface.cpp
    src/logic/Interface/Interface.h
+   src/logic/Interface/INotify.h
    src/logic/Package/Package.cpp
    src/logic/Package/Package.h
    src/logic/Package/AbstractPackage.h
    src/logic/Package/PackageFactory.h
+   src/logic/Courier/CourierFactory.h
    src/logic/Utils/Dimensions.h
    src/map/Map/Map.cpp
    src/map/Map/Map.h
