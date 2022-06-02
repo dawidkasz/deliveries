@@ -83,3 +83,5 @@ std::pair<size_t, City* > Courier::getNextTravelsal() const{
 std::string Courier::getName() const{
     return name;
 }
+
+size_t Courier::number_of_couriers = 0;
