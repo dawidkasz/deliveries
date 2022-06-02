@@ -20,7 +20,7 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     std::string command_id = str_split[0];
     if(command_id == "next_step" || command_id == "next")
     {
-        return new NextStepCommand(symulation);
+        return new NextStepCommand(simulation);
     }
     throw invalid_command_type("Invalid command: " + command_id);
 }

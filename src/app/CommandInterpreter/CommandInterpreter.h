@@ -9,9 +9,9 @@ class invalid_command_type : std::logic_error { using logic_error::logic_error; 
 class CommandInterpreter
 {
     private:
-        Simulation* symulation;
+        Simulation* simulation;
         std::vector<std::string> split_string(std::string str) const;
     public:
-        CommandInterpreter(Simulation* symulation) : symulation(symulation) {};
+        CommandInterpreter(Simulation* simulation) : simulation(simulation) {};
         AbstractCommand* generateCommand(std::string str) const;
 };
