@@ -15,6 +15,12 @@ FetchContent_MakeAvailable(googletest)
 set(PROJECT_SOURCES
    src/app/CommandInterpreter/CommandInterpreter.cpp
    src/app/CommandInterpreter/CommandInterpreter.h
+   src/app/Command/Command.cpp
+   src/app/Command/Command.h
+   src/app/Event/Event.cpp
+   src/app/Event/Event.h
+   src/app/Simulation/Simulation.cpp
+   src/app/Simulation/Simulation.h
    src/logic/Courier/Courier.cpp
    src/logic/Courier/Courier.h
    src/logic/Interface/Interface.cpp
@@ -33,7 +39,7 @@ set(PROJECT_SOURCES
    src/map/Edge/Edge.cpp
    src/map/Edge/Edge.h)
 
-add_executable(symulationApp src/app/SymulationApp.cpp ${PROJECT_SOURCES})
+add_executable(simulationApp src/app/SimulationApp.cpp ${PROJECT_SOURCES})
 
 add_executable(testProgramObjects tests/testPackages.cpp tests/testCouriers.cpp tests/testUtils.cpp ${PROJECT_SOURCES})
 add_executable(testInterface tests/testInterface.cpp ${PROJECT_SOURCES})
