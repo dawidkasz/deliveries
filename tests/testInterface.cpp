@@ -45,19 +45,6 @@ class InterfaceTest: public ::testing::Test {
                             "KR KAT 2";
         ss << input;
         ss >> mp;
-        // emptyInterface = Interface(packageDimensions, courierCapacities, &mp);
-        // interface = Interface(packageDimensions, courierCapacities, &mp);
-        // interface.addCourier(interface.courierFactory.createCourier("test", "WAW", "small", "WAW"));
-        // interface.addCourier(interface.courierFactory.createCourier("test", "POZ", "middle", "POZ"));
-        // interface.addCourier(interface.courierFactory.createCourier("test", "KR", "big", "KR"));
-        // interface.addCourier(interface.courierFactory.createCourier("test", "BDG", "small", "BDG"));
-        // interface.addCourier(interface.courierFactory.createCourier("test", "GD", "big", "GD"));
-        // interface.addCourier(interface.courierFactory.createCourier("test", "LODZ", "big", "LODZ"));
-
-        // interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
-        // interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
-        // interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
-        // interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
     }
     virtual void TearDown(){
         for(auto p:packageDimensions)
