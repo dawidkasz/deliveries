@@ -38,6 +38,10 @@ void main_loop(CommandInterpreter& cmdInt)
                 {
                     std::cout<<"Invalid courier data: "<<e.what()<<"\n";
                 }
+                catch(const InvalidPackageData& e)
+                {
+                    std::cout<<"Invalid package data: "<<e.what()<<"\n";
+                }
                 catch(const too_little_arguments& e)
                 {
                     std::cout<<e.what()<<"\n";

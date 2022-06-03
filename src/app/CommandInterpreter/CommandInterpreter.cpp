@@ -23,7 +23,7 @@ std::vector<std::string> CommandInterpreter::split_string(std::string str) const
 AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
 {
     //addcourier nazwa lokalizacja capacity
-    //addpackage src dst size priority description
+    //addpackage src dst size [priority=1] [description=""]
 
     auto str_split = split_string(str);
     std::string command_id = str_split[0];
@@ -41,11 +41,18 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     }
     else if (command_id == "addpackage")
     {
-        if(str_split.size() < 6)
+        if(str_split.size() < 4)
         {
             throw too_little_arguments("Too little arguments: " + std::to_string(str_split.size() - 1));
         }
-        return new AddPackageCommand(simulation, str_split[1], str_split[2], str_split[3], str_split[4], str_split[5]);
+
+        std::string priority = "1", description="";
+        if(str_split.size() > 4)
+            priority = str_split[4];
+        if(str_split.size() > 5)
+            description = str_split[5];
+
+        return new AddPackageCommand(simulation, str_split[1], str_split[2], str_split[3], priority, description);
     }
     else if (command_id == "statuscourier")
     {
