@@ -37,7 +37,7 @@ class CourierTest : public ::testing::Test
     Dimensions packagesManyLoad;
     Map mp;
     std::vector<Edge*> exampleRoute;
-    CourierFactory factory;
+
     std::unordered_map<std::string, Dimensions*> capacities = {
         {"small", new Dimensions(10)},
         {"middle", new Dimensions(20)},
@@ -96,7 +96,7 @@ class CourierTest : public ::testing::Test
         exampleRoute = mp.getShortestPath("POZ", "KR").second;
 
 
-        factory = CourierFactory(capacities, &mp, notifier);
+
 
     }
     virtual void TearDown(){
@@ -121,12 +121,22 @@ TEST_F(CourierTest, test_creating_courier){
 }
 
 TEST_F(CourierTest, test_creating_courier_by_factory){
+    CourierFactory factory = CourierFactory({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp, notifier);
     auto courier = factory.createCourier("Test", "WAW", "small", "WAW");
     ASSERT_EQ(courier->getCurrentLocation()->getName(), "WAW");
     delete courier;
 }
 
 TEST_F(CourierTest, test_creating_courier_by_factory_exceptions){
+    CourierFactory factory = CourierFactory({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp, notifier);
     ASSERT_THROW({factory.createCourier("Test", "WW", "small", "WAW");}, InvalidCourierData);
     ASSERT_THROW({factory.createCourier("Test", "WAW", "smal", "WAW");}, InvalidCourierData);
     ASSERT_THROW({factory.createCourier("Test", "WAW", "small", "WW");}, InvalidCourierData);

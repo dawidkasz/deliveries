@@ -16,7 +16,6 @@ class PackageTest : public ::testing::Test
     std::string packageDescription = "test";
     int packagePriority = 10;
     Map mp;
-    PackageFactory factory;
     std::unordered_map<std::string, Dimensions*> sizes = {
         {"small", new Dimensions(10)},
         {"middle", new Dimensions(20)},
@@ -46,7 +45,7 @@ class PackageTest : public ::testing::Test
                             "KR LODZ 3";
         ss << input;
         ss >> mp;
-        factory = PackageFactory(sizes, &mp);
+
     }
     virtual void TearDown(){
         delete d;
@@ -87,6 +86,11 @@ TEST_F(PackageTest, test_printing_package){
 }
 
 TEST_F(PackageTest, test_creating_package_by_factory){
+    PackageFactory factory = PackageFactory({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);
     auto package = factory.createPackage("WAW", "KR", "small", 1, "Test");
     ASSERT_EQ(package->getDescription(), "Test");
     ASSERT_EQ(package->getPriority(), 1);
@@ -98,6 +102,11 @@ TEST_F(PackageTest, test_creating_package_by_factory){
 }
 
 TEST_F(PackageTest, test_creating_package_by_factory_exceptions){
+    PackageFactory factory = PackageFactory({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);
     ASSERT_THROW({ factory.createPackage("WW", "KR", "small", 1, "Test");}, InvalidPackageData);
     ASSERT_THROW({ factory.createPackage("WAW", "KRA", "small", 1, "Test");}, InvalidPackageData);
     ASSERT_THROW({ factory.createPackage("WAW", "KR", "massive", 1, "Test");}, InvalidPackageData);

@@ -20,7 +20,6 @@ class InterfaceTest: public ::testing::Test {
         {"big", new Dimensions(300)},
     };
     Map mp;
-    Interface emptyInterface;
     Interface interface;
     virtual void SetUp(){
         std::stringstream ss;
@@ -46,19 +45,19 @@ class InterfaceTest: public ::testing::Test {
                             "KR KAT 2";
         ss << input;
         ss >> mp;
-        emptyInterface = Interface(packageDimensions, courierCapacities, &mp);
-        interface = Interface(packageDimensions, courierCapacities, &mp);
-        interface.addCourier(interface.courierFactory.createCourier("test", "WAW", "small", "WAW"));
-        interface.addCourier(interface.courierFactory.createCourier("test", "POZ", "middle", "POZ"));
-        interface.addCourier(interface.courierFactory.createCourier("test", "KR", "big", "KR"));
-        interface.addCourier(interface.courierFactory.createCourier("test", "BDG", "small", "BDG"));
-        interface.addCourier(interface.courierFactory.createCourier("test", "GD", "big", "GD"));
-        interface.addCourier(interface.courierFactory.createCourier("test", "LODZ", "big", "LODZ"));
+        // emptyInterface = Interface(packageDimensions, courierCapacities, &mp);
+        // interface = Interface(packageDimensions, courierCapacities, &mp);
+        // interface.addCourier(interface.courierFactory.createCourier("test", "WAW", "small", "WAW"));
+        // interface.addCourier(interface.courierFactory.createCourier("test", "POZ", "middle", "POZ"));
+        // interface.addCourier(interface.courierFactory.createCourier("test", "KR", "big", "KR"));
+        // interface.addCourier(interface.courierFactory.createCourier("test", "BDG", "small", "BDG"));
+        // interface.addCourier(interface.courierFactory.createCourier("test", "GD", "big", "GD"));
+        // interface.addCourier(interface.courierFactory.createCourier("test", "LODZ", "big", "LODZ"));
 
-        interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
-        interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
-        interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
-        interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
+        // interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
+        // interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
+        // interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
+        // interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
     }
     virtual void TearDown(){
         for(auto p:packageDimensions)
@@ -69,9 +68,26 @@ class InterfaceTest: public ::testing::Test {
 };
 
 TEST_F(InterfaceTest, test_creating_interface){
-    ASSERT_NO_THROW({Interface interface(packageDimensions, courierCapacities, &mp);});
+    ASSERT_NO_THROW({Interface interface({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);});
 }
 TEST_F(InterfaceTest, test_adding_courier_to_interface){
+    Interface emptyInterface = Interface({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, {
+        {"small", new Dimensions(100)},
+        {"middle", new Dimensions(200)},
+        {"big", new Dimensions(300)},
+    }, &mp);
     auto courier = emptyInterface.courierFactory.createCourier("test", "WAW", "small", "WAW");
     emptyInterface.addCourier(courier);
     auto id = courier->getID();
@@ -79,6 +95,15 @@ TEST_F(InterfaceTest, test_adding_courier_to_interface){
     ASSERT_EQ(returnedCourier, courier);
 }
 TEST_F(InterfaceTest, test_adding_package_to_interface){
+    Interface emptyInterface = Interface({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);
     auto package = emptyInterface.packageFactory.createPackage("WAW", "POZ", "small", 1, "test");
     emptyInterface.addPackage(package);
     auto id = package->getID();
@@ -86,6 +111,26 @@ TEST_F(InterfaceTest, test_adding_package_to_interface){
     ASSERT_EQ(returnedPackage, package);
 }
 TEST_F(InterfaceTest, test_setting_courier_route){
+    Interface interface = Interface({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);
+    interface.addCourier(interface.courierFactory.createCourier("test", "WAW", "small", "WAW"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "POZ", "middle", "POZ"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "KR", "big", "KR"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "BDG", "small", "BDG"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "GD", "big", "GD"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "LODZ", "big", "LODZ"));
+
+    interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
     auto courier = interface.courierFactory.createCourier("test", "POZ", "big", "POZ");
     interface.addCourier(courier);
     ASSERT_TRUE(interface.isAvailable(courier));
@@ -97,6 +142,27 @@ TEST_F(InterfaceTest, test_setting_courier_route){
 }
 
 TEST_F(InterfaceTest, test_assining_unhandled_packages_number){
+    Interface interface = Interface({
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, {
+        {"small", new Dimensions(10)},
+        {"middle", new Dimensions(20)},
+        {"big", new Dimensions(30)},
+    }, &mp);
+    interface.addCourier(interface.courierFactory.createCourier("test", "WAW", "small", "WAW"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "POZ", "middle", "POZ"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "KR", "big", "KR"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "BDG", "small", "BDG"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "GD", "big", "GD"));
+    interface.addCourier(interface.courierFactory.createCourier("test", "LODZ", "big", "LODZ"));
+
+    interface.addPackage(interface.packageFactory.createPackage("POZ","KR", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("WAW","KR", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("POZ","WAW", "small", 1, "test"));
+    interface.addPackage(interface.packageFactory.createPackage("KAT","WAW", "big", 1, "test"));
+    auto courier = interface.courierFactory.createCourier("test", "POZ", "big", "POZ");
     ASSERT_EQ(interface.numOfUnhandledPackages(), 4);
     interface.assignUnhandledPackages();
     ASSERT_EQ(interface.numOfUnhandledPackages(), 0);
