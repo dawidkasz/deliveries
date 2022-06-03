@@ -33,4 +33,8 @@ public:
         }
     }
 
+    ~CourierFactory(){
+        for(auto c : couriersCapacity)
+            delete c.second;
+    }
 };

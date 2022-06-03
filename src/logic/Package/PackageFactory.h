@@ -35,4 +35,9 @@ public:
             throw InvalidPackageData(e.what());
         }
     }
+
+    ~PackageFactory(){
+        for(auto p : packagesDimension)
+            delete p.second;
+    }
 };
