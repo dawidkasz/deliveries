@@ -10,8 +10,7 @@ public:
     :AbstractPackage(description, priority, dimensions, source, destination){
         id = createID();
     }
-    // :description(description), dimensions(dimensions), source(source), destination(destination), id(++number_of_packages),
-    // status(Status::ParcelPosted){};
+
     std::string createID(){
         return "p"+std::to_string(++number_of_packages);
     }
