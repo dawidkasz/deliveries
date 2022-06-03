@@ -46,6 +46,10 @@ void main_loop(CommandInterpreter& cmdInt)
                 {
                     std::cout<<e.what()<<"\n";
                 }
+                catch(std::invalid_argument& e)
+                {
+                    std::cout<<"Invalid command\n";
+                }
             }
     }
 }
