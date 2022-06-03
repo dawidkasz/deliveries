@@ -5,8 +5,8 @@
 class Dimensions{
     double volume=0;
 public:
-    Dimensions()=default;
-    Dimensions(double volume) : volume(volume){
+    // Dimensions()=default;
+    Dimensions(double volume=0) : volume(volume){
         if(volume<0)
             throw std::invalid_argument("Volume cannot be less than 0");
     };

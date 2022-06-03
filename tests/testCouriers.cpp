@@ -108,6 +108,10 @@ class CourierTest : public ::testing::Test
         delete notifier;
         for(auto s:capacities)
             delete s.second;
+        for(auto p:packages)
+            delete p;
+        for(auto p:packagesManyCities)
+            delete p;
     }
 };
 

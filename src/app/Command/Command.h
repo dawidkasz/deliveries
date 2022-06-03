@@ -1,6 +1,7 @@
 #pragma once
 #include "../Simulation/Simulation.h"
 
+
 class AbstractCommand
 {
     public:
@@ -42,5 +43,26 @@ class AddCourierCommand : public AbstractCommand
     public:
         AddCourierCommand(Simulation* simulation, std::string name, std::string defaultLocalization, std::string capacity, std::string currentLocalization) :
             simulation(simulation), name(name), defaultLocalization(defaultLocalization), capacity(capacity), currentLocalization(currentLocalization) {};
+        void execute() const;
+};
+
+class StatusCourierCommand : public AbstractCommand
+{
+    private:
+        Simulation* simulation;
+        Courier* courier;
+    public:
+        StatusCourierCommand(Simulation* simulation, std::string id) : simulation(simulation), courier(simulation->interface->getCourier(stoi(id))) {};
+        void execute() const;
+
+};
+
+class StatusPackageCommand : public AbstractCommand
+{
+    private:
+        Simulation* simulation;
+        AbstractPackage* package;
+    public:
+        StatusPackageCommand(Simulation* simulation, std::string id) : simulation(simulation), package(simulation->interface->getPackage(id)) {};
         void execute() const;
 };
