@@ -32,7 +32,7 @@ Courier* Interface::getCourier(size_t id) {
 }
 
 void Interface::addCourier(Courier* courier){
-    couriers.emplace(courier->getID(), courier);
+    couriers[courier->getID()] = courier;
     availableCouriers.insert(courier);
 }
 
@@ -41,7 +41,7 @@ AbstractPackage* Interface::getPackage(std::string id) {
 }
 
 void Interface::addPackage(AbstractPackage* package){
-    packages.emplace(package->getID(), package);
+    packages[package->getID()] = package;
     unhandledPackages.push_back(package);
 }
 
@@ -56,6 +56,7 @@ bool Interface::isAvailable(Courier* c){
 std::vector<Courier*> Interface::assignUnhandledPackages(){
     std::unordered_map<Courier*, Dimensions> potentialCourierLoad;
     std::unordered_map<Courier*, std::unordered_set<City*>> usedCouriers;
+    std::vector<AbstractPackage*> handledPackages;
 
     for(AbstractPackage* package : unhandledPackages){
         std::unordered_map<City*, size_t> distances = map->getAllDistances(package->getSource()).first;
@@ -64,7 +65,6 @@ std::vector<Courier*> Interface::assignUnhandledPackages(){
         Courier* assignedCourier = nullptr;
         for(auto pairIdCourier : couriers){
             Courier* courier = pairIdCourier.second;
-
             if(!isAvailable(courier) || potentialCourierLoad[courier] + *package->getVolume() > *courier->getCapacity())
                 continue;
 
@@ -79,8 +79,12 @@ std::vector<Courier*> Interface::assignUnhandledPackages(){
             potentialCourierLoad[assignedCourier] += *package->getVolume();
             usedCouriers[assignedCourier].insert(package->getSource());
             usedCouriers[assignedCourier].insert(package->getDestination());
+            handledPackages.push_back(package);
         }
     }
+
+    for(AbstractPackage* package : handledPackages)
+        unhandledPackages.erase(std::find(unhandledPackages.begin(), unhandledPackages.end(), package));
 
     std::vector<Courier*> couriersToSend;
     for(auto it : usedCouriers){
@@ -96,4 +100,8 @@ std::vector<Courier*> Interface::assignUnhandledPackages(){
     }
 
     return couriersToSend;
+}
+
+size_t Interface::numOfUnhandledPackages(){
+    return unhandledPackages.size();
 }

@@ -95,3 +95,9 @@ TEST_F(InterfaceTest, test_setting_courier_route){
     ASSERT_EQ(courier->getDestination()->getName(), "KR");
     ASSERT_EQ(courier->getNextTravelsal()->getName(), "WAW");
 }
+
+TEST_F(InterfaceTest, test_assining_unhandled_packages_number){
+    ASSERT_EQ(interface.numOfUnhandledPackages(), 4);
+    interface.assignUnhandledPackages();
+    ASSERT_EQ(interface.numOfUnhandledPackages(), 0);
+}

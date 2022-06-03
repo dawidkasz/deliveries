@@ -5,14 +5,10 @@
 #include "../../map/Map/Map.h"
 
 
-struct InvalidCourierData : public std::exception
+struct InvalidCourierData : public std::logic_error
 {
-    std::string message;
-    InvalidCourierData(std::string message):message(message){};
-	const char * what () const throw ()
-    {
-    	return ("Provided courier data are invalid:\n"+message).c_str();
-    }
+    using logic_error::logic_error;
+    InvalidCourierData(std::string message) : logic_error("Provided courier data are invalid:\n"+message) {};
 };
 
 class CourierFactory {

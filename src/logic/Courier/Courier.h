@@ -23,20 +23,20 @@ class Courier
     Container packagesToCollect;
     Container packagesToDeliver;
     Dimensions currentLoad;
-    void removeLocalPackages();
-    void collectLocalPackages();
     INotify* notifier=nullptr;
 public:
     Courier()=default;
     Courier(std::string name, City* defaultLocalization, Dimensions* capacity, City* currentLocalization=nullptr, INotify* notifier=nullptr)
     :name(name), defaultLocalization(defaultLocalization), capacity(capacity),currentLocalization(currentLocalization), notifier(notifier), id(++number_of_couriers){
     };
+    void removeLocalPackages();
+    void collectLocalPackages();
     bool operator==(Courier const& courier) const;
     bool operator!=(Courier const& courier) const;
     size_t getID() const;
     void addPackagesToCollect(std::vector<AbstractPackage*> const& packages);
     void performLocalActions();
-    bool canDeliverPackage(AbstractPackage const& package) const;
+    bool canMoveForward() const;
     void nextLocation();
     void setNewRoute(Route const& route);
     std::string getName() const;
@@ -46,4 +46,6 @@ public:
     Dimensions* getCapacity() const;
     City* getNextTravelsal() const;
     size_t getDistToNextTravelsal() const;
+    std::vector<AbstractPackage*> getLocalPackagesToDeliver(City* city);
+    std::vector<AbstractPackage*> getLocalPackagesToCollect(City* city);
 };

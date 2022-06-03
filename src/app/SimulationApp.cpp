@@ -1,6 +1,10 @@
 #include "CommandInterpreter/CommandInterpreter.h"
 #include <iostream>
+#include <exception>
+#include <fstream>
+#include <sstream>
 #include "../logic/Utils/Dimensions.h"
+#include "../logic/Courier/CourierFactory.h"
 
 void main_loop(CommandInterpreter& cmdInt)
 {
@@ -8,16 +12,58 @@ void main_loop(CommandInterpreter& cmdInt)
     {
         std::string command_str;
         std::cout<<"> ";
-        std::cin>>command_str;
-        auto cmd = cmdInt.generateCommand(command_str);
-        cmd->execute();
+        getline(std::cin, command_str);
+
+        if(command_str=="")
+            {
+                AbstractCommand *cmd = cmdInt.generateCommand("next_step");
+                cmd->execute();
+                delete cmd;
+            }
+            else if(command_str == "exit")
+            {
+                return;
+            }
+            else if(command_str != "")
+            {
+                try{
+                    AbstractCommand *cmd = cmdInt.generateCommand(command_str);
+                    cmd->execute();
+                    delete cmd;
+                }
+                catch(const invalid_command_type& e){
+                    std::cout<<e.what()<<"\n";
+                }
+                catch(const InvalidCourierData& e)
+                {
+                    std::cout<<"Invalid courier data: "<<e.what()<<"\n";
+                }
+                catch(const too_little_arguments& e)
+                {
+                    std::cout<<e.what()<<"\n";
+                }
+            }
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    if(argc < 2){
+        throw std::invalid_argument("Map config file not specified.");
+    }
+
     Map mp;
-    // Load cities from file
+    std::ifstream mapConfig(argv[1]);
+    if (mapConfig.is_open()){
+        std::stringstream ss;
+        ss << mapConfig.rdbuf();
+        ss >> mp;
+        mapConfig.close();
+    }else{
+        throw std::invalid_argument("File doesn't exist.");
+        return 0;
+    }
+
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
     Sizes packageDimensions = {
         {"small", new Dimensions(10)},
@@ -30,7 +76,8 @@ int main()
         {"big", new Dimensions(300)},
     };
     Interface interface(packageDimensions, courierCapacities, &mp);
-    Simulation simulation(std::cout, &interface);
+    Simulation simulation(std::cout, &interface, 5, 5);
+
     CommandInterpreter cmdInt(&simulation);
     main_loop(cmdInt);
 }

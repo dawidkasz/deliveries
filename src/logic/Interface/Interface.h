@@ -1,11 +1,14 @@
 #pragma once
 #include <unordered_map>
 #include <unordered_set>
+#include <algorithm>
 #include "../Courier/Courier.h"
 #include "../Courier/CourierFactory.h"
 #include "../Package/PackageFactory.h"
 #include "../../map/Map/Map.h"
 #include "INotify.h"
+
+
 class Interface:public INotify{
     typedef std::vector<Edge*> Route;
     typedef std::unordered_map<std::string, Dimensions*> Sizes;
@@ -27,7 +30,7 @@ public:
           courierFactory(CourierFactory(couriersCapacity, map, this)){};
 
     Courier* getCourier(size_t id) ;
-    AbstractPackage* getPackage(std::string id) ;
+    AbstractPackage* getPackage(std::string id);
     void addCourier(Courier* courier);
     void addPackage(AbstractPackage* package);
     bool moveCourierForward(Courier* courier);
@@ -36,6 +39,8 @@ public:
     void assignCourierPackages(Courier* courier, std::vector<AbstractPackage*> const& packages);
     bool isAvailable(Courier* c);
     std::vector<Courier*> assignUnhandledPackages();
+
+    size_t numOfUnhandledPackages();
 
     ~Interface(){
         for(auto c:couriers)
