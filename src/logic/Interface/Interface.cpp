@@ -95,7 +95,7 @@ std::vector<Courier*> Interface::assignUnhandledPackages(){
         }
 
         std::vector<Edge*> newRoute = map->getOptimalRoute(citiesOnRoute, courier->getCurrentLocation());
-        courier->setNewRoute(newRoute);
+        setCourierNewRoute(courier, newRoute);
         couriersToSend.push_back(courier);
     }
 
