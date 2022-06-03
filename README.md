@@ -19,5 +19,16 @@ make
 ```
 Uruchomienie aplikacji
 ```
-./build/symulationApp
+./build/symulationApp path/to/map.txt
 ```
+
+## Użytkowanie
+
+Dostępne komendy:
+
+- addcourier [nazwa] [lokalizacja] [pojemność]
+- addpackage [skąd] [dokąd] [rozmiar] [priorytet=1] [opis=""]
+- statuscourier [id]
+- statuspackage [id]
+
+
