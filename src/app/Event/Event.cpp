@@ -48,23 +48,20 @@ void ArriveAtLocEvent::execute() const
 
     City* currentLocaction = courier->getCurrentLocation();
     size_t currentTime = simulation->getCurrentTime();
-    auto packagesToDeliver = courier->getLocalPackagesToDeliver(currentLocaction);
-
-    std::cout<<"ToDeliver: "<<packagesToDeliver.size()<<"\n";
 
     if(courier->canMoveForward())
         simulation->addEvent(new ArriveAtLocEvent(simulation, courier, courier->getNextTravelsal(), currentTime + courier->getDistToNextTravelsal()));
 
+    std::vector<AbstractPackage*> packagesToDeliver = courier->getLocalPackagesToDeliver(currentLocaction);
     if(!packagesToDeliver.empty()){
-        std::cout<<"Add deliver event\n";
         simulation->addEvent(new DeliveryEvent(simulation, courier, currentLocaction, packagesToDeliver, currentTime));
     }
-    auto packagesToCollect = courier->getLocalPackagesToCollect(currentLocaction);
+
+    std::vector<AbstractPackage*> packagesToCollect = courier->getLocalPackagesToCollect(currentLocaction);
     if(!packagesToCollect.empty()){
-        std::cout<<"Add pickup package event\n";
         simulation->addEvent(new PickupPackageEvent(simulation, courier, currentLocaction, packagesToCollect, currentTime));
     }
-    std::cout<<"ToCollect: "<<packagesToCollect.size()<<"\n";
+
 }
 
 void PickupPackageEvent::execute() const
@@ -77,7 +74,7 @@ void AssignPackagesEvent::execute() const{
 
     std::cout<<simulation->interface->numOfUnhandledPackages()<<std::endl;
     std::vector<Courier*> couriers = simulation->interface->assignUnhandledPackages();
-    for(auto courier:couriers){
+    for(Courier* courier : couriers){
 
         size_t nextTime = simulation->getCurrentTime() + courier->getDistToNextTravelsal();
         simulation->addEvent(new ArriveAtLocEvent(simulation, courier, courier->getNextTravelsal(), nextTime));

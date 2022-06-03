@@ -9,7 +9,9 @@ void AddPackageCommand::execute() const
 {
     Package* package = simulation->interface->packageFactory.createPackage(sourceCity, destinationCity, size, priority, description);
     simulation->interface->addPackage(package);
-    std::cout<<"Package added!\n";
+    std::cout<<"Package added!\nPackage ID: "<<package->getID()<<'\n';
+
+    simulation->setTimeWithoutPackages(0);
 }
 
 void AddCourierCommand::execute() const
@@ -29,5 +31,5 @@ void StatusCourierCommand::execute() const
 
 void StatusPackageCommand::execute() const
 {
-    std::cout<<package;
+    std::cout<<*package;
 }

@@ -76,11 +76,11 @@ TEST_F(PackageTest, test_creating_packages){
 TEST_F(PackageTest, test_printing_package){
     Package p(packageDescription, packagePriority, d, source.get(), destination.get());
     std::stringstream ss;
-    ss<<"Description"<<packageDescription<<'\n';
-    ss<<"Source"<<source<<'\n';
-    ss<<"Destination"<<destination<<'\n';
-    ss<<"Volume"<<d<<'\n';
-    ss<<"Status"<<"Parcel is posted"<<'\n';
+    ss<<"Description: "<<packageDescription<<'\n';
+    ss<<"Source: "<<*source<<'\n';
+    ss<<"Destination: "<<*destination<<'\n';
+    ss<<"Volume: "<<*d<<'\n';
+    ss<<"Status: "<<"Parcel is posted"<<'\n';
     std::stringstream ss2;
     ss2<<p;
     ASSERT_EQ(ss.str(), ss2.str());

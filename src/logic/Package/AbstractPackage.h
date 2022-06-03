@@ -41,11 +41,11 @@ public:
     status(Status::ParcelPosted){};
     virtual int getPriority() const = 0;
     virtual void print(std::ostream& c) const{
-        c<<"Description"<<description<<'\n';
-        c<<"Source"<<source<<'\n';
-        c<<"Destination"<<destination<<'\n';
-        c<<"Volume"<<dimensions<<'\n';
-        c<<"Status"<<verboseStatus(status)<<'\n';
+        c<<"Description: "<<description<<'\n';
+        c<<"Source: "<<*source<<'\n';
+        c<<"Destination: "<<*destination<<'\n';
+        c<<"Volume: "<<*dimensions<<'\n';
+        c<<"Status: "<<verboseStatus(status)<<'\n';
     }
     friend std::ostream& operator<<(std::ostream& c, AbstractPackage const& package){
         package.print(c);
