@@ -16,10 +16,12 @@ void Simulation::executeAllNext() noexcept
 {
     ++timeWithoutPackages;
 
-    if(timeWithoutPackages >= addPackagesTimeout && interface->numOfUnhandledPackages() > 0){
-        eventQueue.push(new AssignPackagesEvent(this, current_time));
-    }else if(interface->numOfUnhandledPackages() > unhandledPackagesTreshold){
-        eventQueue.push(new AssignPackagesEvent(this, current_time));
+    if(interface->numOfAvailableCouriers()){
+        if(timeWithoutPackages >= addPackagesTimeout && interface->numOfUnhandledPackages() > 0){
+            eventQueue.push(new AssignPackagesEvent(this, current_time));
+        }else if(interface->numOfUnhandledPackages() > unhandledPackagesTreshold){
+            eventQueue.push(new AssignPackagesEvent(this, current_time));
+        }
     }
 
     if(eventQueue.empty())
@@ -27,7 +29,7 @@ void Simulation::executeAllNext() noexcept
 
     current_time = eventQueue.top()->getTime();
 
-    while(eventQueue.top()->getTime() == current_time)
+    while(!eventQueue.empty() && eventQueue.top()->getTime() == current_time)
     {
         AbstractEvent* to_execute = eventQueue.top();
         eventQueue.pop();

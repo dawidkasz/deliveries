@@ -41,6 +41,7 @@ public:
     std::vector<Courier*> assignUnhandledPackages();
 
     size_t numOfUnhandledPackages();
+    size_t numOfAvailableCouriers();
 
     ~Interface(){
         for(auto c:couriers)

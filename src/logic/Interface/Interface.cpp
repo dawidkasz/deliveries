@@ -105,3 +105,7 @@ std::vector<Courier*> Interface::assignUnhandledPackages(){
 size_t Interface::numOfUnhandledPackages(){
     return unhandledPackages.size();
 }
+
+size_t Interface::numOfAvailableCouriers(){
+    return availableCouriers.size();
+}

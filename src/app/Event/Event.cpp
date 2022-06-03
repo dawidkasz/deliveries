@@ -70,7 +70,6 @@ void PickupPackageEvent::execute() const
 void AssignPackagesEvent::execute() const{
     simulation->setTimeWithoutPackages(0);
 
-    std::cout<<simulation->interface->numOfUnhandledPackages()<<std::endl;
     std::vector<Courier*> couriers = simulation->interface->assignUnhandledPackages();
     for(Courier* courier : couriers){
         size_t nextTime = this->time + courier->getDistToNextTravelsal();
