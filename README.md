@@ -1,34 +1,32 @@
-# 22L PROI Projekt Spedycja
+# deliveries-simulation
 
-Projekt grupowy z przedmiotu PROI w semestrze 22L  
-Autorzy:
+Team project for the OOP course at Warsaw University of Technology
+
+Authors:
 * Dawid Kaszyński
 * Mikołaj Szawerda
 * Jan Kowalczewski
 
-## Opis działania
-## Uruchomienie programu
-Konfiguracja
+## Build
 ```
 cmake -B ./build
-```
-Budowa plików wykonywalnych
-```
+
 cd ./build
+
 make
 ```
-Uruchomienie aplikacji
+
+## Run
+
 ```
 ./build/symulationApp path/to/map.txt
 ```
 
-## Użytkowanie
+## Usage
 
-Dostępne komendy:
+Commands:
 
-- addcourier [nazwa] [lokalizacja] [pojemność]
-- addpackage [skąd] [dokąd] [rozmiar] [priorytet=1] [opis=""]
+- addcourier [name] [localization] [capacity]
+- addpackage [source] [destination] [size] [priority=1] [desc=""]
 - statuscourier [id]
 - statuspackage [id]
-
-
