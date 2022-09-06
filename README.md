@@ -30,3 +30,4 @@ Commands:
 - addpackage [source] [destination] [size] [priority=1] [desc=""]
 - statuscourier [id]
 - statuspackage [id]
+- exit

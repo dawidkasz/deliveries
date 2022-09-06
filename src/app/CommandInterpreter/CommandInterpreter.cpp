@@ -35,7 +35,7 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     {
         if(str_split.size() < 4)
         {
-            throw too_little_arguments("Too little arguments: " + std::to_string(str_split.size() - 1));
+            throw too_little_arguments("Too few arguments: " + std::to_string(str_split.size() - 1));
         }
         return new AddCourierCommand(simulation, str_split[1], str_split[2], str_split[3], str_split[2]);
     }
@@ -43,7 +43,7 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     {
         if(str_split.size() < 4)
         {
-            throw too_little_arguments("Too little arguments: " + std::to_string(str_split.size() - 1));
+            throw too_little_arguments("Too few arguments: " + std::to_string(str_split.size() - 1));
         }
 
         std::string priority = "1", description="";
@@ -58,7 +58,7 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     {
         if(str_split.size() < 2)
         {
-            throw too_little_arguments("Too little arguments: " + std::to_string(str_split.size() - 1));
+            throw too_little_arguments("Too few arguments: " + std::to_string(str_split.size() - 1));
         }
         return new StatusCourierCommand(simulation, str_split[1]);
     }
@@ -66,7 +66,7 @@ AbstractCommand* CommandInterpreter::generateCommand(std::string str) const
     {
         if(str_split.size() < 2)
         {
-            throw too_little_arguments("Too little arguments: " + std::to_string(str_split.size() - 1));
+            throw too_little_arguments("Too few arguments: " + std::to_string(str_split.size() - 1));
         }
         return new StatusPackageCommand(simulation, str_split[1]);
     }

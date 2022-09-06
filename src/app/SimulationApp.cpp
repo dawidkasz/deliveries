@@ -3,6 +3,7 @@
 #include <exception>
 #include <fstream>
 #include <sstream>
+#include <memory>
 #include "../logic/Utils/Dimensions.h"
 #include "../logic/Courier/CourierFactory.h"
 
@@ -16,9 +17,8 @@ void main_loop(CommandInterpreter& cmdInt)
 
         if(command_str=="")
             {
-                AbstractCommand *cmd = cmdInt.generateCommand("next_step");
+                std::unique_ptr<AbstractCommand> cmd(cmdInt.generateCommand("next_step"));
                 cmd->execute();
-                delete cmd;
             }
             else if(command_str == "exit")
             {
@@ -27,9 +27,8 @@ void main_loop(CommandInterpreter& cmdInt)
             else if(command_str != "")
             {
                 try{
-                    AbstractCommand *cmd = cmdInt.generateCommand(command_str);
+                    std::unique_ptr<AbstractCommand> cmd(cmdInt.generateCommand(command_str));
                     cmd->execute();
-                    delete cmd;
                 }
                 catch(const invalid_command_type& e){
                     std::cout<<e.what()<<"\n";
